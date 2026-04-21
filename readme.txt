@@ -80,7 +80,7 @@ Please report security bugs found in the source code of the Cooked plugin throug
 
 == Upgrade Notice ==
 
-Version 1.14.0 includes
+Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode style attributes, extends migration and imports with ingredient substitution fields, and speeds up “Apply to All” template updates on large sites.
 
 == Changelog ==
 
