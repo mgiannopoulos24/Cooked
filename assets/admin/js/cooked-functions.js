@@ -1370,93 +1370,8 @@ function cooked_init_bulk_add($) {
     });
 }
 
-/** Returns true if an ingredient row has no meaningful field values (heading or line fields). */
-function cooked_is_ingredient_block_empty($block) {
-    if ($block.hasClass('cooked-ingredient-heading')) {
-        return ($block.find('[data-ingredient-part="section_heading_name"]').val() || '').trim() === '';
-    }
-    var hasContent = false;
-    $block.find('[data-ingredient-part]').each(function() {
-        var part = jQuery(this).data('ingredient-part');
-        if (part === 'section_heading_element') {
-            return;
-        }
-        var $f = jQuery(this);
-        var v = $f.is('select') ? $f.val() : ($f.val() || '').trim();
-        if (v !== null && v !== '' && String(v).trim() !== '') {
-            hasContent = true;
-            return false;
-        }
-    });
-    return !hasContent;
-}
-
-/** Plain-text direction step content from TinyMCE or textarea (HTML stripped, NBSPs normalized). */
-function cooked_direction_block_content_text($block) {
-    var $ta = $block.find('textarea[data-direction-part="content"]');
-    if (!$ta.length) {
-        return '';
-    }
-    var id = $ta.attr('id');
-    var raw = '';
-    if (id && typeof tinymce !== 'undefined' && tinymce.get(id)) {
-        raw = tinymce.get(id).getContent() || '';
-    } else {
-        raw = $ta.val() || '';
-    }
-    return jQuery('<div>').html(raw).text().replace(/\u00a0/g, ' ').trim();
-}
-
-/** Returns true if a direction row is empty (no heading text, image, or body content). */
-function cooked_is_direction_block_empty($block) {
-    if ($block.hasClass('cooked-direction-heading')) {
-        return ($block.find('[data-direction-part="section_heading_name"]').val() || '').trim() === '';
-    }
-    if (($block.find('input[data-direction-part="image"]').val() || '').trim() !== '') {
-        return false;
-    }
-    return cooked_direction_block_content_text($block) === '';
-}
-
-/** Removes ingredient rows that are empty before bulk-adding new items. */
-function cooked_bulk_remove_empty_ingredient_rows() {
-    jQuery('#cooked-ingredients-builder').children('.cooked-ingredient-block').each(function() {
-        var $b = jQuery(this);
-        if (cooked_is_ingredient_block_empty($b)) {
-            $b.remove();
-        }
-    });
-}
-
-/** Removes empty direction rows before bulk-adding, and removes WP editors when needed. */
-function cooked_bulk_remove_empty_direction_rows() {
-    var canRemoveWpEditor = !!(
-        cooked_admin_functions_js_vars.wp_editor_roles_allowed &&
-        typeof wp !== 'undefined' &&
-        wp.editor &&
-        typeof wp.editor.remove === 'function'
-    );
-
-    jQuery('#cooked-directions-builder').children('.cooked-direction-block').each(function() {
-        var $b = jQuery(this);
-        if (!cooked_is_direction_block_empty($b)) {
-            return;
-        }
-        if (canRemoveWpEditor) {
-            var $ta = $b.find('textarea[data-direction-part="content"]');
-            var fieldID = $ta.attr('id');
-            if (fieldID) {
-                wp.editor.remove(fieldID);
-            }
-        }
-        $b.remove();
-    });
-}
-
 /** Appends direction rows from bulk-add items (headings or plain steps) and resets the builder. */
 function cooked_bulk_add_directions(items) {
-    cooked_bulk_remove_empty_direction_rows();
-
     var $_builder = jQuery('#cooked-directions-builder');
     var $_parent = $_builder.parent();
 
@@ -1483,8 +1398,6 @@ function cooked_bulk_add_directions(items) {
 
 /** Appends ingredient rows from bulk-add items (headings or amount/unit/name) and resets the builder. */
 function cooked_bulk_add_ingredients_parsed(items) {
-    cooked_bulk_remove_empty_ingredient_rows();
-
     var $_builder = jQuery('#cooked-ingredients-builder');
     var $_parent = $_builder.parent();
 
