@@ -1,6 +1,6 @@
 var $_CookedConditionalTimeout  = false;
 
-// Touch event support for sortable drag handles on mobile devices
+/** Maps touch events on sortable drag handles to mouse events so sortable works on touch devices. */
 var cookedSortableTouchHandler = function(event) {
     var target = event.target;
     var types = {
@@ -178,32 +178,29 @@ var cookedSortableTouchHandler = function(event) {
                         if (confirm_save && !thisButton.hasClass('disabled')) {
                             thisContainer.find('.button, .button-primary').addClass('disabled');
 
-                            var ajax__save_default_new = $.post(
+                            $.post(
                                 cooked_admin_functions_js_vars.ajax_url,
                                 {
                                     action: 'cooked_save_default',
                                     'default_content': recipe_editor_content,
                                     nonce: cooked_save_default_nonce
                                 },
-                                function(result) {
-                                    var ajax__save_default_all = $.post(
+                                function() {
+                                    $.post(
                                         cooked_admin_functions_js_vars.ajax_url,
                                         {
-                                            action: 'cooked_get_recipe_ids',
+                                            action: 'cooked_get_recipe_count',
                                             nonce: cooked_save_default_bulk_nonce
                                         },
-                                        function(json_recipe_ids) {
+                                        function(response) {
                                             thisButton.removeClass("button-primary").addClass("button");
 
-                                            if (json_recipe_ids) {
-                                                var recipe_ids = JSON.parse(json_recipe_ids),
-                                                    total_recipes = Object.keys(recipe_ids).length;
-
-                                                if (total_recipes > 0) {
-                                                    cooked_set_default_template(json_recipe_ids, total_recipes, recipe_editor_content, cooked_save_default_bulk_nonce, instance);
-                                                }
+                                            if (response && response.success && response.data.total > 0) {
+                                                cooked_recipe_update_counter = 0;
+                                                cooked_set_default_template(0, response.data.total, recipe_editor_content, cooked_save_default_bulk_nonce, instance);
                                             }
-                                        }
+                                        },
+                                        'json'
                                     );
                                 }
                             );
@@ -666,6 +663,9 @@ var cookedSortableTouchHandler = function(event) {
             });
         }
 
+        // Bulk Add Modal
+        cooked_init_bulk_add($);
+
         if ( $_CookedRecipeGallery.length ) {
 
             var gallery_images_frame;
@@ -794,56 +794,59 @@ var cookedSortableTouchHandler = function(event) {
 })( jQuery );
 
 var cooked_recipe_update_counter = 0;
+var cooked_bulk_per_page = 20;
 
-function cooked_set_default_template(recipe_ids, total_recipes, content, nonce, instance) {
-    var temp_counter = 0,
-        total_counter = 0,
-        progress_percent = 0;
+/** Applies default recipe content in paginated AJAX batches and updates the progress UI. */
+function cooked_set_default_template(page, total_recipes, content, nonce, instance) {
+    if (total_recipes <= 0) {
+        return;
+    }
 
-    if (total_recipes > 0) {
-        var progress = jQuery('#cooked-template-progress');
-        var progress_bar = progress.find('.cooked-progress-bar');
-        var progress_text = jQuery('#cooked-template-progress-text');
+    var progress = jQuery('#cooked-template-progress');
+    var progress_bar = progress.find('.cooked-progress-bar');
+    var progress_text = jQuery('#cooked-template-progress-text');
 
-        if (!progress.hasClass('cooked-active')) {
-            progress.addClass('cooked-active');
-            progress_text.addClass('cooked-active');
-            progress_bar.css({ "width" : "0%" });
-            instance.reposition();
-        }
+    if (!progress.hasClass('cooked-active')) {
+        progress.addClass('cooked-active');
+        progress_text.addClass('cooked-active');
+        progress_bar.css({ "width" : "0%" });
+        instance.reposition();
+    }
 
-        var ajax__bulk_save_default_template = jQuery.post(
-            cooked_admin_functions_js_vars.ajax_url,
-            {
-                action: 'cooked_save_default_bulk',
-                recipe_ids: recipe_ids,
-                default_content: content,
-                nonce: nonce
-            },
-            function(new_recipe_ids) {
-                if (new_recipe_ids && new_recipe_ids != 'false' && new_recipe_ids != false) {
-                    var leftover_recipe_ids = JSON.parse(new_recipe_ids),
-                        leftover_recipes = Object.keys(leftover_recipe_ids).length;
+    jQuery.post(
+        cooked_admin_functions_js_vars.ajax_url,
+        {
+            action: 'cooked_save_default_bulk',
+            page: page,
+            default_content: content,
+            nonce: nonce
+        },
+        function(response) {
+            if (response && response.success) {
+                cooked_recipe_update_counter = Math.min((page + 1) * cooked_bulk_per_page, total_recipes);
 
-                    cooked_recipe_update_counter = total_recipes - leftover_recipes;
+                var progress_percent = Math.round((cooked_recipe_update_counter / total_recipes) * 100);
+                progress_bar.css({ "width" : progress_percent + "%" });
+                progress_text.text(cooked_recipe_update_counter + " / " + total_recipes);
 
-                    progress_percent = Math.round((cooked_recipe_update_counter / total_recipes ) * 100);
-                    progress_bar.css({ "width" : progress_percent + "%" });
-                    progress_text.text(cooked_recipe_update_counter + " / " + total_recipes);
-                    cooked_set_default_template(new_recipe_ids, total_recipes, content, nonce, instance);
+                if (response.data.has_more) {
+                    cooked_set_default_template(page + 1, total_recipes, content, nonce, instance);
                 } else {
                     jQuery('.cooked-save-default-all').text(cooked_admin_functions_js_vars.i18n_applied);
                     progress_bar.css({ "width" : "100%" });
+                    progress_text.text(total_recipes + " / " + total_recipes);
                     progress.removeClass('cooked-active');
                     progress_text.removeClass('cooked-active').text("");
 
                     instance.reposition();
                 }
             }
-        );
-    };
+        },
+        'json'
+    );
 }
 
+/** Sets the total time field to prep time plus cook time. */
 function cooked_updateTotalTimeValue( prepTime, cookTime ) {
     var totalTimeInput = jQuery( '#cooked-total-time' ),
         totalTime = prepTime + cookTime;
@@ -858,6 +861,7 @@ function cooked_init_gallery_sorting() {
     jQuery('#cooked-recipe-image-gallery').sortable();
 }
 
+/** Syncs nutrition tab inputs with the live nutrition label preview (values and daily-value percents). */
 function init_nutrition_facts( nutritionTab ) {
     nutritionTab.find('input').each(function() {
         var thisInput = jQuery(this),
@@ -1107,4 +1111,321 @@ function cooked_init_conditional_field(thisID) {
 
         }, 25);
     });
+}
+
+/** Wires the bulk-add modal (preview, parse, submit) for ingredients and directions. */
+function cooked_init_bulk_add($) {
+    var $overlay = $('#cooked-bulk-add-overlay');
+    if (!$overlay.length) return;
+
+    var $textarea = $('#cooked-bulk-add-textarea'),
+        $preview = $('#cooked-bulk-add-preview'),
+        $previewList = $('#cooked-bulk-add-preview-list'),
+        $title = $('#cooked-bulk-add-title'),
+        $typeField = $('#cooked-bulk-add-type'),
+        $submitBtn = $overlay.find('.cooked-bulk-add-submit'),
+        $spinner = $overlay.find('.cooked-bulk-add-spinner'),
+        jsVars = cooked_admin_functions_js_vars,
+        parseTimer = null,
+        lastParsedText = '';
+
+    /** Opens the bulk-add overlay for the given type and sets copy/placeholders. */
+    function openModal(type) {
+        $typeField.val(type);
+        $textarea.val('');
+        $previewList.empty();
+        $preview.attr('data-bulk-type', '');
+        $preview.hide();
+        $submitBtn.attr('disabled', 'disabled');
+        $spinner.hide();
+        lastParsedText = '';
+
+        if (type === 'ingredients') {
+            $title.text(jsVars.i18n_bulk_add_ingredients);
+            $textarea.attr('placeholder', jsVars.i18n_bulk_add_placeholder_ingredients);
+            $submitBtn.text(jsVars.i18n_bulk_add_submit_ingredients);
+        } else {
+            $title.text(jsVars.i18n_bulk_add_directions);
+            $textarea.attr('placeholder', jsVars.i18n_bulk_add_placeholder_directions);
+            $submitBtn.text(jsVars.i18n_bulk_add_submit_directions);
+        }
+
+        $overlay.show();
+        $textarea.focus();
+    }
+
+    /** Hides the bulk-add overlay and clears its state. */
+    function closeModal() {
+        $overlay.hide();
+        $textarea.val('');
+        $previewList.empty();
+        $preview.attr('data-bulk-type', '');
+        $preview.hide();
+        lastParsedText = '';
+        if (parseTimer) clearTimeout(parseTimer);
+    }
+
+    /** Strips leading list markers from a single line of bulk text. */
+    function cleanLine(line) {
+        line = line.trim();
+        line = line.replace(/^(\d+\)\s+|\d+\.\s+|[a-z]+\)\s+|[•·\-\*]\s+|[A-Z]+\.\s+|[IVX]+\.\s+)/, '');
+        return line.trim();
+    }
+
+    /** Splits bulk textarea content into non-empty cleaned lines. */
+    function parseTextToLines(text) {
+        var lines = text.split(/[\r\n]+/);
+        var result = [];
+        for (var i = 0; i < lines.length; i++) {
+            var cleaned = cleanLine(lines[i]);
+            if (cleaned) {
+                result.push(cleaned);
+            }
+        }
+        return result;
+    }
+
+    /** Escapes a string for safe insertion into HTML attribute strings. */
+    function escHtml(str) {
+        return $('<span>').text(str).html();
+    }
+
+    /** Renders bulk directions preview rows from parsed lines. */
+    function renderDirectionsPreview(lines) {
+        $previewList.empty();
+        if (!lines.length) {
+            $preview.attr('data-bulk-type', '');
+            $preview.hide();
+            $submitBtn.attr('disabled', 'disabled');
+            return;
+        }
+        $preview.attr('data-bulk-type', 'directions');
+        $preview.show();
+        $submitBtn.removeAttr('disabled');
+
+        for (var i = 0; i < lines.length; i++) {
+            var $row = $('<div class="cooked-bulk-add-preview-row"></div>');
+            var $cb = $('<label class="cooked-bulk-add-heading-toggle"><input type="checkbox" data-index="' + i + '" /><span>' + jsVars.i18n_bulk_add_section_heading + '</span></label>');
+            var $text = $('<input type="text" class="cooked-bulk-add-preview-text" data-index="' + i + '" value="' + escHtml(lines[i]) + '" />');
+            $row.append($cb).append($text);
+            $previewList.append($row);
+        }
+    }
+
+    /** Renders bulk ingredients preview rows (optionally with server-parsed amount/unit/name). */
+    function renderIngredientsPreview(lines, parsed) {
+        $previewList.empty();
+        if (!lines.length) {
+            $preview.attr('data-bulk-type', '');
+            $preview.hide();
+            $submitBtn.attr('disabled', 'disabled');
+            return;
+        }
+        $preview.attr('data-bulk-type', 'ingredients');
+        $preview.show();
+        $submitBtn.removeAttr('disabled');
+
+        if (!$previewList.find('.cooked-bulk-add-preview-header').length) {
+            $previewList.prepend(
+                '<div class="cooked-bulk-add-preview-header">' +
+                    '<span class="cooked-bulk-add-col-heading"></span>' +
+                    '<span class="cooked-bulk-add-col-amount">' + escHtml(jsVars.i18n_bulk_add_amount) + '</span>' +
+                    '<span class="cooked-bulk-add-col-unit">' + escHtml(jsVars.i18n_bulk_add_unit) + '</span>' +
+                    '<span class="cooked-bulk-add-col-name">' + escHtml(jsVars.i18n_bulk_add_name) + '</span>' +
+                '</div>'
+            );
+        }
+
+        for (var i = 0; i < lines.length; i++) {
+            var p = parsed && parsed[i] ? parsed[i] : { amount: '', measurement: '', name: lines[i] };
+            var $row = $('<div class="cooked-bulk-add-preview-row cooked-bulk-add-preview-row-ingredient" data-index="' + i + '"></div>');
+            var $cb = $('<label class="cooked-bulk-add-heading-toggle"><input type="checkbox" data-index="' + i + '" /><span>' + jsVars.i18n_bulk_add_section_heading + '</span></label>');
+            var $headingWrap = $('<div class="cooked-bulk-add-heading-line-wrap"></div>');
+            var $headingLbl = $('<span class="cooked-bulk-add-heading-line-label"></span>').text(jsVars.i18n_bulk_add_heading_line_label);
+            var $lineInput = $('<input type="text" class="cooked-bulk-add-preview-text" data-index="' + i + '" />').val(lines[i]);
+            $headingWrap.append($headingLbl).append($lineInput);
+            var $amt = $('<input type="text" class="cooked-bulk-add-parsed-amount" data-index="' + i + '" value="' + escHtml(p.amount) + '" />');
+            var $unit = $('<input type="text" class="cooked-bulk-add-parsed-unit" data-index="' + i + '" value="' + escHtml(p.measurement) + '" />');
+            var $name = $('<input type="text" class="cooked-bulk-add-parsed-name" data-index="' + i + '" value="' + escHtml(p.name) + '" />');
+            $row.append($cb).append($headingWrap).append($amt).append($unit).append($name);
+            $previewList.append($row);
+        }
+    }
+
+    /** Fetches AJAX-parsed ingredient lines and refreshes the preview. */
+    function fetchIngredientParse(lines) {
+        if (!lines.length) {
+            renderIngredientsPreview([], null);
+            return;
+        }
+
+        $spinner.show().css('visibility', 'visible');
+
+        $.post(jsVars.ajax_url, {
+            action: 'cooked_parse_bulk_ingredients',
+            nonce: jsVars.cooked_bulk_add_nonce,
+            lines: lines
+        }, function(response) {
+            $spinner.hide();
+            var parsed = (response.success && response.data && response.data.parsed) ? response.data.parsed : null;
+            renderIngredientsPreview(lines, parsed);
+        }).fail(function() {
+            $spinner.hide();
+            renderIngredientsPreview(lines, null);
+        });
+    }
+
+    $textarea.on('input', function() {
+        var type = $typeField.val();
+        var lines = parseTextToLines($(this).val());
+        var textKey = lines.join('\n');
+
+        if (type === 'directions') {
+            renderDirectionsPreview(lines);
+        } else {
+            if (textKey === lastParsedText) return;
+            lastParsedText = textKey;
+            renderIngredientsPreview(lines, null);
+            if (parseTimer) clearTimeout(parseTimer);
+            parseTimer = setTimeout(function() {
+                fetchIngredientParse(lines);
+            }, 400);
+        }
+    });
+
+    $(document).on('click', '.cooked-bulk-add-button', function(e) {
+        e.preventDefault();
+        var type = $(this).data('type');
+        openModal(type);
+    });
+
+    $overlay.on('click', '.cooked-bulk-add-close, .cooked-bulk-add-cancel', function(e) {
+        e.preventDefault();
+        closeModal();
+    });
+
+    $overlay.on('click', function(e) {
+        if ($(e.target).is($overlay)) {
+            closeModal();
+        }
+    });
+
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape' && $overlay.is(':visible')) {
+            closeModal();
+        }
+    });
+
+    $previewList.on('change', 'input[type="checkbox"]', function() {
+        var $row = $(this).closest('.cooked-bulk-add-preview-row');
+        var isHeading = $(this).is(':checked');
+        $row.toggleClass('cooked-bulk-add-is-heading', isHeading);
+    });
+
+    $submitBtn.on('click', function(e) {
+        e.preventDefault();
+        if ($(this).attr('disabled')) return;
+
+        var type = $typeField.val();
+        var items = [];
+
+        if (type === 'ingredients') {
+            $previewList.find('.cooked-bulk-add-preview-row').each(function() {
+                var $row = $(this);
+                var isHeading = $row.find('input[type="checkbox"]').is(':checked');
+                var text = $row.find('.cooked-bulk-add-preview-text').val().trim();
+                if (!text) return;
+
+                if (isHeading) {
+                    items.push({ text: text, heading: true });
+                } else {
+                    items.push({
+                        heading: false,
+                        amount: $row.find('.cooked-bulk-add-parsed-amount').val().trim(),
+                        measurement: $row.find('.cooked-bulk-add-parsed-unit').val().trim(),
+                        name: $row.find('.cooked-bulk-add-parsed-name').val().trim() || text
+                    });
+                }
+            });
+        } else {
+            $previewList.find('.cooked-bulk-add-preview-row').each(function() {
+                var $row = $(this);
+                var text = $row.find('.cooked-bulk-add-preview-text').val().trim();
+                var isHeading = $row.find('input[type="checkbox"]').is(':checked');
+                if (text) {
+                    items.push({ text: text, heading: isHeading });
+                }
+            });
+        }
+
+        if (!items.length) return;
+
+        if (type === 'directions') {
+            cooked_bulk_add_directions(items);
+            closeModal();
+        } else {
+            cooked_bulk_add_ingredients_parsed(items);
+            closeModal();
+        }
+    });
+}
+
+/** Appends direction rows from bulk-add items (headings or plain steps) and resets the builder. */
+function cooked_bulk_add_directions(items) {
+    var $_builder = jQuery('#cooked-directions-builder');
+    var $_parent = $_builder.parent();
+
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+
+        if (item.heading) {
+            var $heading = $_parent.find('.cooked-heading-template').clone()
+                .removeClass('cooked-template cooked-heading-template')
+                .addClass('cooked-direction-block cooked-direction-heading');
+            $heading.find('[data-direction-part="section_heading_name"]').val(item.text);
+            $_builder.append($heading);
+        } else {
+            var $direction = $_parent.find('.cooked-direction-template').clone()
+                .removeClass('cooked-template cooked-direction-template')
+                .addClass('cooked-direction-block');
+            $direction.find('[data-direction-part="content"]').val(item.text);
+            $_builder.append($direction);
+        }
+    }
+
+    cooked_reset_direction_builder();
+}
+
+/** Appends ingredient rows from bulk-add items (headings or amount/unit/name) and resets the builder. */
+function cooked_bulk_add_ingredients_parsed(items) {
+    var $_builder = jQuery('#cooked-ingredients-builder');
+    var $_parent = $_builder.parent();
+
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+
+        if (item.heading) {
+            var $heading = $_parent.find('.cooked-heading-template').clone()
+                .removeClass('cooked-template cooked-heading-template')
+                .addClass('cooked-ingredient-block cooked-ingredient-heading');
+            $heading.find('[data-ingredient-part="section_heading_name"]').val(item.text);
+            $_builder.append($heading);
+        } else {
+            var $ingredient = $_parent.find('.cooked-ingredient-template').clone()
+                .removeClass('cooked-template cooked-ingredient-template')
+                .addClass('cooked-ingredient-block');
+
+            $ingredient.find('[data-ingredient-part="amount"]').val(item.amount || '');
+
+            if (item.measurement) {
+                $ingredient.find('[data-ingredient-part="measurement"]').val(item.measurement);
+            }
+
+            $ingredient.find('[data-ingredient-part="name"]').val(item.name || '');
+
+            $_builder.append($ingredient);
+        }
+    }
+
+    cooked_reset_ingredient_builder();
 }
