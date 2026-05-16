@@ -1,9 +1,9 @@
 === Cooked - Recipe Management ===
 Contributors: xjsv, boxystudio
 Tags: recipe, recipes, food, cooking, nutrition
-Requires at least: 4.7
-Tested up to: 6.9.1
-Stable tag: 1.13.0
+Requires at least: 5.0.0
+Tested up to: 7.0
+Stable tag: 1.14.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -80,17 +80,26 @@ Please report security bugs found in the source code of the Cooked plugin throug
 
 == Upgrade Notice ==
 
-Version 1.13.0 includes changes to the [cooked-related-recipes] shortcode.
+Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode style attributes, extends migration and imports with ingredient substitution fields, and speeds up “Apply to All” template updates on large sites.
 
 == Changelog ==
 
-Version 1.13.0 includes CSV import functionality and changes to the [cooked-related-recipes] shortcode.
-
-== Changelog ==
+= 1.14.0 =
+* **NEW:** Added a new "Add Bulk Ingredients" and "Add Bulk Directions" buttons to the recipe builder.
+* **FIX:** Validated style attribute for the [cooked-recipe-card] and [cooked-categories] shortcodes.
+* **TWEAK:** Added Ingredient Substitution fields to the migration and imports features.
+* **TWEAK:** Updated the "Apply to All" template update feature to fix potential performance issues with large recipe collections.
 
 = 1.13.0 =
-* **NEW:** Added CSV import functionality for bulk importing recipes from CSV files. Supports all recipe fields including ingredients with substitutions, directions, nutrition data, categories, and tags.
+* **NEW:** Added CSV import functionality for bulk importing recipes from CSV files. Supports all recipe fields including ingredients with substitutions, directions, nutrition data, categories, and tags (thanks to @mgiannopoulos24).
 * **TWEAK:** Simplified the way the [cooked-related-recipes] shortcode works.
+* **FIX:** Fixed a bug with the recipe directions and ingredients not being sortable in mobile devices.
+* **FIX:** Fixed a bug when toggling full screen view in recipe fields that use the WP Editor.
+* **FIX:** Fixed bug when changing image under recipe instructions steps where the image thumbnail was not updated with the replaced photo after clicking "Use this image".
+* **FIX:** Fixed styling issue in numbering with recipes with 10+ instructions steps.
+* **NEW:** Added recipe instruction steps counter in the editing view.
+* **FIX:** Fixed a bug with full screen mode not working inside Elementor.
+* **TWEAK:** Other minor improvements and bug fixes.
 
 = 1.12.0 =
 * **NEW:** Added the ability to add ingredients substitutions thanks to @mgiannopoulos24.
