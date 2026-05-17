@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Widgets
- * @since       1.0.0
+ * @since       1.8.8
 */
 
 // Exit if accessed directly
@@ -20,7 +20,7 @@ class Cooked_Plugin_Extra {
      *
      * Adds a "Upgrade to Pro" link to the plugin list page.
      *
-     * @since 1.0.0
+     * @since 1.8.8
      * @param array $links
      * @return array
      */

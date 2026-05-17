@@ -1,4 +1,19 @@
 <?php
+/**
+ * Recipe List Widget
+ *
+ * @package     Cooked
+ * @subpackage  Widgets
+ * @since       1.3.0
+ */
+
+/**
+ * Cooked_Widget_Recipe_List Class
+ *
+ * This class handles the Recipe List widget display.
+ *
+ * @since 1.3.0
+ */
 
 class Cooked_Widget_Recipe_List extends WP_Widget {
 

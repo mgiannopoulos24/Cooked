@@ -23,7 +23,10 @@
     "i18n:update-po": "if [ -d .ddev ]; then ddev wp i18n update-po wordpress/wp-content/plugins/cooked/languages/cooked.pot wordpress/wp-content/plugins/cooked/languages/cooked.po; else wp-env run cli wp i18n update-po wp-content/plugins/cooked/languages/cooked.pot wp-content/plugins/cooked/languages/cooked.po; fi",
     "i18n:make-mo": "if [ -d .ddev ]; then ddev wp i18n make-mo wordpress/wp-content/plugins/cooked/languages/cooked.po wordpress/wp-content/plugins/cooked/languages/cooked.mo; else wp-env run cli wp i18n make-mo wp-content/plugins/cooked/languages/cooked.po wp-content/plugins/cooked/languages/cooked.mo; fi",
     "i18n": "bun run i18n:make-pot && bun run i18n:update-po && bun run i18n:make-mo",
-    "bundle": "bun run gulp build && bun run i18n && bunx bestzip build/cooked.zip cooked.php LICENSE readme.txt wpml-config.xml assets/ includes/ languages/ templates/ vendor/"
+    "lint": "./vendor/bin/phpcs --standard=phpcs.xml .",
+    "lint-fix": "./vendor/bin/phpcbf --standard=phpcs.xml .",
+    "test": "./vendor/bin/phpunit",
+    "bundle": "bun run gulp build && bun run i18n && composer install --no-dev && bunx bestzip build/cooked.zip cooked.php LICENSE readme.txt wpml-config.xml assets/ includes/ languages/ templates/ vendor/"
   },
   "repository": {
     "type": "git",

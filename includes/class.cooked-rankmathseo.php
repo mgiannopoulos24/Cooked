@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Rank Math SEO Support
- * @since       1.0.0
+ * @since       1.8.8
 */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * This class handles Rank Math SEO support.
  *
- * @since 1.0.0
+ * @since 1.8.8
  */
 class Cooked_RankMathSEO {
 

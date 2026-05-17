@@ -18,6 +18,7 @@ tests/playwright-report/
 tests/blob-report/
 tests/playwright/.cache/
 tests/.auth/
+tests/phpunit/.cache
 
 # Build
 build/*

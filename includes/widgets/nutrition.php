@@ -1,4 +1,19 @@
 <?php
+/**
+ * Nutrition Facts Widget
+ *
+ * @package     Cooked
+ * @subpackage  Widgets
+ * @since       1.2.0
+ */
+
+/**
+ * Cooked_Widget_Nutrition Class
+ *
+ * This class handles the Nutrition Facts widget display.
+ *
+ * @since 1.2.0
+ */
 
 class Cooked_Widget_Nutrition extends WP_Widget {
 

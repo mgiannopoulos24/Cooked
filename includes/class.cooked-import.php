@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Import
- * @since       1.0.0
+ * @since       1.8.2
 */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  *
  * This class handles the import of recipes from other plugins.
  *
- * @since 1.0.0
+ * @since 1.8.2
  */
 class Cooked_Import {
 

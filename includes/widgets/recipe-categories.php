@@ -1,4 +1,19 @@
 <?php
+/**
+ * Recipe Categories Widget
+ *
+ * @package     Cooked
+ * @subpackage  Widgets
+ * @since       1.6.4
+ */
+
+/**
+ * Cooked_Widget_Recipe_Categories Class
+ *
+ * This class handles the Recipe Categories widget display.
+ *
+ * @since 1.6.4
+ */
 
 class Cooked_Widget_Recipe_Categories extends WP_Widget {
 

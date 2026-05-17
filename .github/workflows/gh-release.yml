@@ -1,0 +1,55 @@
+name: "GitHub Release"
+on:
+  # push:
+  #   tags:
+  #     - "*"
+  workflow_dispatch:
+jobs:
+  release:
+    name: "Release"
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag is on main branch
+        run: |
+          # Fetch the latest main branch from origin
+          git fetch origin main
+          
+          # Check if the current commit (${{ github.sha }}) is part of the origin/main history
+          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
+            echo "Success: Tag is on the main branch."
+          else
+            echo "Error: Tag was not pushed to the main branch. Skipping release."
+            exit 1
+          fi
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Build the project
+        run: bun install && bun run build
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          coverage: none
+
+      - name: Install production Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-progress
+
+      - name: Create plugin zip
+        run: bunx bestzip build/cooked.zip cooked.php LICENSE readme.txt wpml-config.xml assets/ includes/ languages/ templates/ vendor/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/cooked.zip
