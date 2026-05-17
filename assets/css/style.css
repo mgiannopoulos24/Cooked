@@ -1960,3 +1960,37 @@ body.cooked-fsm-active #wpadminbar {
         min-width: 97%;
     }
 }
+
+/* Allergen Badges */
+.cooked-allergens {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 6px 0 0 0;
+    vertical-align: middle;
+}
+
+.cooked-allergen {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 5px;
+    border-radius: 11px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-transform: uppercase;
+    cursor: default;
+}
+
+.cooked-recipe-card .cooked-allergens {
+    display: flex;
+    margin: 8px 0 0 0;
+}
+
+.cooked-recipe-card-modern-centered .cooked-allergens {
+    justify-content: center;
+}

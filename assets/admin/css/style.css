@@ -923,3 +923,41 @@ body .button.button-cooked-reset:hover { color:#555; }
     float: none !important;
     margin: 0 !important;
 }
+
+/* Allergen Checkboxes (Sidebar Meta Box) */
+#cooked_allergens .cooked-allergens-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#cooked_allergens .cooked-allergen-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+#cooked_allergens .cooked-allergen-checkbox input[type="checkbox"] {
+    margin: 0;
+}
+
+#cooked_allergens .cooked-allergen-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 5px;
+    border-radius: 11px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+#cooked_allergens .cooked-allergen-label {
+    font-size: 13px;
+    color: #333;
+}
