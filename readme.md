@@ -74,6 +74,7 @@ bun run start:wp-env   # start
 bun run stop:wp-env    # stop
 bun run reset:wp-env   # reset
 bun run destroy:wp-env # tear down
+bun run shell:wp-env   # run bash inside the container
 ```
 Site at port 8888, tests at 8889.
 
@@ -107,6 +108,21 @@ bun run watch   # watch and rebuild on change
 bun run bundle
 ```
 Runs build and i18n, then creates `build/cooked.zip` ready for distribution (excludes dev files).
+
+#### Testing
+
+**PHPCS** — Lint PHP files against WordPress Coding Standards and PHPCompatibility (PHP 7.4+):
+``` bash
+bun run lint       # check for violations
+bun run lint-fix   # auto-fix violations
+```
+
+**PHPUnit** — Run the test suite (14 test classes covering CSV import, recipes, settings, SEO, and more):
+``` bash
+bun run test
+```
+
+Tests are in `tests/phpunit/` with CSV fixtures in `tests/test_data/`. Requires a running wp-env or DDEV environment.
 
 ## Documentation
 
