@@ -6,10 +6,13 @@
 
 # DDEV
 .ddev/
+.ddev/docker-compose.cooked.yaml
 
-# Node.js
+# Dev dependencies
 node_modules/
+vendor
 
+# Tests
 tests/test-results/
 tests/playwright-report/
 tests/blob-report/
@@ -18,9 +21,6 @@ tests/.auth/
 
 # Build
 build/*
-
-# DDEV generated files
-.ddev/docker-compose.cooked.yaml
 
 # WordPress
 wordpress/
