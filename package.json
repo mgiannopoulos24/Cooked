@@ -13,6 +13,7 @@
     "reset:wp-env": "wp-env reset all",
     "stop:wp-env": "wp-env stop",
     "destroy:wp-env": "wp-env destroy",
+    "shell:wp-env": "wp-env run cli /bin/bash",
     "start:ddev": "ddev start",
     "restart:ddev": "ddev restart",
     "stop:ddev": "ddev stop",
