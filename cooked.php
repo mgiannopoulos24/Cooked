@@ -538,14 +538,6 @@ final class Cooked_Plugin {
 
 endif; // End if class_exists check.
 
-// Uninstall Hook.
-register_uninstall_hook( __FILE__, 'cooked_uninstall' );
-function cooked_uninstall() {
-    Cooked_Roles::remove_caps();
-    Cooked_Roles::remove_roles();
-    flush_rewrite_rules();
-}
-
 /**
  * The main function for that returns Cooked_Plugin.
  *
