@@ -68,12 +68,12 @@ This project uses [Bun](https://bun.sh) for package management and running scrip
 #### Development environment
 You can run the plugin locally with either wp-env or DDEV; pick one.
 
-**wp-env** — Requires Node; `@wordpress/env` is in devDependencies. Config in `.wp-env.json` (PHP 7.4, port 8888, plugin mounted from repo root).
+**wp-env** — Requires Node.js and Docker; `@wordpress/env` is in devDependencies. Config in `.wp-env.json` (PHP 7.4, port 8888, plugin mounted from repo root).
 ``` bash
 bun run start:wp-env   # start
 bun run stop:wp-env    # stop
-bun run reset:wp-env   # reset
-bun run destroy:wp-env # tear down
+bun run reset:wp-env   # wipe all db uploads
+bun run destroy:wp-env # remove containers and data
 bun run shell:wp-env   # run bash inside the container
 ```
 Site at port 8888, tests at 8889.
