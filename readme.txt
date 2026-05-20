@@ -7,6 +7,7 @@ Stable tag: 1.14.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Funding: https://github.com/sponsors/XjSv
 
 Cooked is the absolute best way to create & display recipes with WordPress. SEO optimized, galleries, timers, and much more.
 
@@ -86,13 +87,13 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.14.0 =
 * **NEW:** Added a new "Add Bulk Ingredients" and "Add Bulk Directions" buttons to the recipe builder.
-* **FIX:** Validated style attribute for the [cooked-recipe-card] and [cooked-categories] shortcodes.
+* **FIX:** Validated style attribute for the `[cooked-recipe-card]` and `[cooked-categories]` shortcodes.
 * **TWEAK:** Added Ingredient Substitution fields to the migration and imports features.
 * **TWEAK:** Updated the "Apply to All" template update feature to fix potential performance issues with large recipe collections.
 
 = 1.13.0 =
-* **NEW:** Added CSV import functionality for bulk importing recipes from CSV files. Supports all recipe fields including ingredients with substitutions, directions, nutrition data, categories, and tags (thanks to @mgiannopoulos24).
-* **TWEAK:** Simplified the way the [cooked-related-recipes] shortcode works.
+* **NEW:** Added CSV import functionality for bulk importing recipes from CSV files. Supports all recipe fields including ingredients with substitutions, directions, nutrition data, categories, and tags (thanks to [@mgiannopoulos24](https://github.com/mgiannopoulos24)).
+* **TWEAK:** Simplified the way the `[cooked-related-recipes]` shortcode works.
 * **FIX:** Fixed a bug with the recipe directions and ingredients not being sortable in mobile devices.
 * **FIX:** Fixed a bug when toggling full screen view in recipe fields that use the WP Editor.
 * **FIX:** Fixed bug when changing image under recipe instructions steps where the image thumbnail was not updated with the replaced photo after clicking "Use this image".
@@ -103,19 +104,19 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.12.0 =
 * **NEW:** Added the ability to add ingredients substitutions thanks to @mgiannopoulos24.
-* **NEW:** Added new [cooked-related-recipes] shortcode to display related recipes based on categories, cuisines, ingredients, and other factors.
-* **NEW:** Added Polylang & WPML plugin support.
-* **TWEAK:** Added [cooked-next-previous] shortcode documentation in recipe "Shortcodes" tab.
+* **NEW:** Added new `[cooked-related-recipes]` shortcode to display related recipes based on categories, cuisines, ingredients, and other factors.
+* **NEW:** Added [Polylang](https://polylang.pro/) & [WPML](https://wpml.org/) plugin support.
+* **TWEAK:** Added `[cooked-next-previous]` shortcode documentation in recipe "Shortcodes" tab.
 
 = 1.11.4 =
-* **FIX:** Addressed the CVE-2025-68586 security vulnerability.
-* **FIX:** Addressed the CVE-2025-62989 security vulnerability.
+* **FIX:** Addressed the [CVE-2025-68586](https://nvd.nist.gov/vuln/detail/CVE-2025-68586) security vulnerability.
+* **FIX:** Addressed the [CVE-2025-62989](https://nvd.nist.gov/vuln/detail/CVE-2025-62989) security vulnerability.
 
 = 1.11.3 =
-* **NEW:** Added the Patchstack Vulnerability Disclosure Program.
+* **NEW:** Added the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp).
 
 = 1.11.2 =
-* **NEW:** Added import for WP Recipe Maker recipes.
+* **NEW:** Added import for [WP Recipe Maker](https://wordpress.org/plugins/wp-recipe-maker/) recipes.
 * **TWEAK:** Improved author permalink generation and rewrite rules for recipe authors.
 * **TWEAK:** Added transient message handling for guests to support guest recipe submissions.
 * **NEW:** Added developer hooks: `cooked_info_shortcode_output` filter and `cooked_ingredients_shortcode_before`/`cooked_ingredients_shortcode_after` actions for enhanced customization.
@@ -132,8 +133,8 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.11.0 =
 * **FIX:** Fixed a bug when users have multiple roles where the WP Editor does not appear in the recipe edit screen.
-* **NEW:** Added the 'cooked_format_author_name' developer filter for customizing how author names are displayed via code. View the [Cooked Documentation](https://docs.cooked.pro/docs/author-name/) for more information.
-* **NEW:** Added 'Default Heading Tags' settings option to allow users to choose between H2, H3, H4, H5, H6 or Div for the Directions and Ingredients sections.
+* **NEW:** Added the `cooked_format_author_name` developer filter for customizing how author names are displayed via code. View the [Cooked Documentation](https://docs.cooked.pro/docs/author-name/) for more information.
+* **NEW:** Added 'Default Heading Tags' settings option to allow users to choose between `H2`, `H3`, `H4`, `H5`, `H6` or `Div` for the Directions and Ingredients sections.
 * **FIX:** Fixed a couple of PHP related issues.
 * **FIX:** Fixed a bug with the Browse Recipe filters that would not work when the Browse Recipe Page is set as the Homepage.
 * **FIX:** Fixed a bug with default values not loading when introducing a new settings field and the settings page was not saved yet.
@@ -146,9 +147,9 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **TWEAK:** Improved SEO by preventing print pages from being indexed in search engines.
 * **FIX:** Fixed an issue where checkbox settings with default values couldn't be turned off in the settings panel.
 * **NEW:** Added support for profile photos with a new optimized image size specifically for user avatars.
-* **NEW:** Added flexibility to customize heading styles for Directions and Ingredients sections - now you can choose between H2, H3, H4, H5, H6 or regular text.
+* **NEW:** Added flexibility to customize heading styles for Directions and Ingredients sections - now you can choose between `H2`, `H3`, `H4`, `H5`, `H6` or regular text.
 * **FIX:** Improved accessibility by adding descriptive titles to recipe direction images.
-* **FIX:** Fixed an issue where recipe notes weren't displaying properly when using the [cooked-notes] shortcode with show_header option.
+* **FIX:** Fixed an issue where recipe notes weren't displaying properly when using the `[cooked-notes]` shortcode with `show_header` option.
 * **FIX:** Fixed an issue where the servings was showing as 0 in the recipe print view.
 * **FIX:** Improved French language support by fixing issues with the built-in translation.
 
@@ -158,7 +159,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **TWEAK:** Fixed a memory issue when using the themes Customizer and the recipe card widget.
 
 = 1.9.5 =
-* **FIX:** Resolved an issue with the preprocess_shortcode filter that was causing memory problems and plugin crashes, especially when used with Elementor.
+* **FIX:** Resolved an issue with the `preprocess_shortcode` filter that was causing memory problems and plugin crashes, especially when used with Elementor.
 * **FIX:** Enhanced the navigation for recipe categories and tags in the admin dashboard, ensuring the Recipes menu remains expanded.
 * **FIX:** Addressed compatibility issues with PHP v8.1.
 * **FIX:** Corrected a bug affecting the pretty URLs for sorting and searching in the Browse Recipe feature.
@@ -183,25 +184,25 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **NEW:** Added pretty URL's to the Browse Recipe page when searching and filtering recipes.
 * **FIX:** Fixed issue with the recipe search when filters are applied.
 * **FIX:** Fixed a couple of PHP v8.3 compatibility issues.
-* **FIX:** Fixed issue with Divi Theme Builder shortcodes not loading.
+* **FIX:** Fixed issue with [Divi Theme Builder](https://www.elegantthemes.com/gallery/divi/) shortcodes not loading.
 * **FIX:** Fixed a bug when installing the plugin for the first time and the settings were not saved yet.
 
 = 1.8.9 =
-* **NEW:** Improved SEO by dynamically updating the canonical URL on the Browse Recipe page to match active category/tag filters. Supports Rank Math SEO and Yoast SEO.
+* **NEW:** Improved SEO by dynamically updating the canonical URL on the Browse Recipe page to match active category/tag filters. Supports [Rank Math SEO](https://wordpress.org/plugins/seo-by-rank-math/) and [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/).
 * **TWEAK:** Enhanced translation handling to better support custom language files and prevent conflicts.
 * **FIX:** Resolved compatibility issue with Loco Translate plugin that was causing incorrect textdomain loading.
 
 = 1.8.8 =
-* **NEW:** Added option to disable the recipe archive page under Cooked Settings > General > Advanced Settings.
-* **NEW:** Added Rank Math SEO and Yoast SEO support. Added a custom variable called `cooked_recipe_category` that can be used in the title or description fields.
-* **NEW:** Added 'hide_excerpt' Parameter to [cooked-browse] shortcode to hide the recipe excerpt.
+* **NEW:** Added option to disable the recipe archive page under Cooked `Settings > General > Advanced Settings`.
+* **NEW:** Added [Rank Math SEO](https://wordpress.org/plugins/seo-by-rank-math/) and [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/) support. Added a custom variable called `cooked_recipe_category` that can be used in the title or description fields.
+* **NEW:** Added `hide_excerpt` Parameter to `[cooked-browse]` shortcode to hide the recipe excerpt.
 * **NEW:** Added Recipes column in the Admin users table to show the number of recipes each user has created.
 * **NEW:** Added post states to the Browse Recipe page. When selected a label will appear in the page list table indicating which page is the Cooked Browse Recipes Page.
 * **TWEAK:** Moved WP Editor Roles option into General settings.
 * **TWEAK:** The Excerpt, Notes and Directions fields will display the WP Editor depending on the 'WP Editor Roles' setting.
-* **TWEAK:** If the "Disable Cooked <meta> Tags" setting is enabled, the SEO Description field will be hidden in the recipe edit screen.
+* **TWEAK:** If the "Disable Cooked `<meta>` Tags" setting is enabled, the SEO Description field will be hidden in the recipe edit screen.
 * **FIX:** Added Meta Description to Meta Tags, it uses the SEO Description, Excerpt or Title, in that order.
-* **FIX:** Fixed bug when Disable Cooked <meta> Tags is turned on.
+* **FIX:** Fixed bug when Disable Cooked `<meta>` Tags is turned on.
 * **FIX:** Fixed bug with schema output where the direction titles were duplicated as 'Step 1'. The section heading logic is removed in favor or labeling each step as Step #.
 * **FIX:** Fixed bug with the recipe print view not displaying the Notes section.
 
@@ -211,23 +212,23 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 = 1.8.6 =
 * **FIX:** Fixed bug with recipe pagination. It now works with Plain and Custom Permalink structures.
 * **FIX:** Fixed bug with the recipe directions text editor not being responsive.
-* **FIX:** Fixed permalink preview in Cooked Settings > Permalinks.
+* **FIX:** Fixed permalink preview in Cooked `Settings > Permalinks`.
 
 = 1.8.5 =
 * **NEW:** Added 4 new measurement options: "Drizzle", "Clove", "Jar", and "Can" to support the Delicious Recipes plugin import.
 * **FIX:** Fixed bug with the recipe gallery not showing Vimeo videos thumbnails.
 * **FIX:** Fixed bug with Cooked settings success message showing on other admin pages.
 * **FIX:** Fixed undefined index error when the Browse Page is not set.
-* **FIX:** Fixed bug with the recipe SEO schema not having a "name" for the recipe directions steps.
+* **FIX:** Fixed bug with the recipe SEO schema not having a `name` for the recipe directions steps.
 
 = 1.8.4 =
 * **TWEAK:** Updated the look of the Nutrition Facts to conform with the new FDA guidelines on [Changes to the Nutrition Facts Label](https://www.fda.gov/food/food-labeling-nutrition/changes-nutrition-facts-label).
-* **TWEAK:** Updated the Percent Daily Value (%DV) to conform with the new FDA guidelines on [Daily Value on the Nutrition and Supplement Facts Labels](https://www.fda.gov/food/nutrition-facts-label/daily-value-nutrition-and-supplement-facts-labels).
-* **TWEAK:** Updated the recipe schema to include the nutrition information and updated the "recipeInstructions" property to use the "HowToStep" type for better SEO.
+* **TWEAK:** Updated the Percent Daily Value (`%DV`) to conform with the new FDA guidelines on [Daily Value on the Nutrition and Supplement Facts Labels](https://www.fda.gov/food/nutrition-facts-label/daily-value-nutrition-and-supplement-facts-labels).
+* **TWEAK:** Updated the recipe schema to include the nutrition information and updated the `recipeInstructions` property to use the `HowToStep` type for better SEO.
 * **NEW:** Added unique IDs to the recipe directions for the ability to link directly to a recipe step (i.e. https://www.example.com/recipe/my-recipe#cooked-single-direction-step-3).
 * **FIX:** Fixed a bug with the recipe nutrition information not setting values correctly in the admin area.
-* **FIX:** Various bug fixes for the WP Delicious import feature thanks to @Genevsky.
-* **FIX:** Fixed bug with certain links not saving correctly in the recipes Notes field thanks to @nwm2006.
+* **FIX:** Various bug fixes for the [WP Delicious](https://wordpress.org/plugins/delicious-recipes/) import feature thanks to @Genevsky.
+* **FIX:** Fixed bug with certain links not saving correctly in the recipes Notes field thanks to [@nwm2006](https://profiles.wordpress.org/nwm2006/).
 * **TWEAK:** Fixed bugs with the permissions system.
 * **TWEAK:** Minor improvements to settings page and other areas of the plugin.
 
@@ -236,9 +237,9 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.8.2 =
 * **FIX:** Fixed bug with the recipe direction not saving correctly.
-* **FIX:** Fixed bug with the tooltips such as in the Recipe Template "Save as Default" button not working when "Smash Balloon Social Photo Feed" plugin is installed.
-* **NEW:** Added the Notes feature, a new field to add notes to your recipes. Use the [cooked-notes] shortcode to display them.
-* **NEW:** Added the option to import recipes from the WP Delicious plugin.
+* **FIX:** Fixed bug with the tooltips such as in the Recipe Template "Save as Default" button not working when [Smash Balloon Social Photo Feed](https://wordpress.org/plugins/instagram-feed/) plugin is installed.
+* **NEW:** Added the **Notes** feature, a new field to add notes to your recipes. Use the `[cooked-notes]` shortcode to display them.
+* **NEW:** Added the option to import recipes from the [WP Delicious](https://wordpress.org/plugins/delicious-recipes/) plugin.
 
 = 1.8.1 =
 * **FIX:** Persistent Cross-Site Scripting Vulnerability via the Cooked Timer.
@@ -250,13 +251,13 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.8.0 =
 * **NEW:** Added Hands Free Cooking Mode for a more convenient cooking experience.
-* **TWEAK:** Improved pretty URLs for pagination links thanks to [morvy](https://github.com/morvy).
+* **TWEAK:** Improved pretty URLs for pagination links thanks to [@morvy](https://github.com/morvy).
 * **TWEAK:** Improved the way recipe categories and tags are handled for better site performance.
 * **TWEAK:** Optimized the plugin's performance by streamlining code and improving how external libraries are loaded.
 * **TWEAK:** Updated language files for better international support.
-* **FIX:** Implemented several security enhancements to keep your site safe and secure thanks to [re-alter](https://github.com/re-alter).
-* **FIX:** Fixed an issue with the recipe gallery editing feature thanks to [re-alter](https://github.com/re-alter).
-* **FIX:** Improved user permissions system for better control over who can edit recipes and templates thanks to [re-alter](https://github.com/re-alter).
+* **FIX:** Implemented several security enhancements to keep your site safe and secure thanks to @re-alter.
+* **FIX:** Fixed an issue with the recipe gallery editing feature thanks to @re-alter.
+* **FIX:** Improved user permissions system for better control over who can edit recipes and templates thanks to @re-alter.
 * **FIX:** Resolved various bugs related to recipe display and functionality.
 * **FIX:** Fixed an issue with the full-screen mode of the image viewer.
 * **FIX:** Corrected the display of recipe nutrition information.
@@ -265,16 +266,16 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **FIX:** Serving Size Not Changing Ingredients.
 
 = 1.7.15.3 =
-* **FIX:** HTML showing in front end when using the [cooked-browse] shortcode.
+* **FIX:** HTML showing in front end when using the `[cooked-browse]` shortcode.
 
 = 1.7.15.2 =
-* **FIX:** Composer detected issues in your platform error discovered by @ianrlp.
-* **FIX:** PHP undefined variable $hours_left discovered and fixed by @addyh.
-* **TWEAK:** Security improvements thanks to @addyh.
+* **FIX:** Composer detected issues in your platform error discovered by [@ianrlp](https://profiles.wordpress.org/ianrlp/).
+* **FIX:** PHP undefined variable `$hours_left` discovered and fixed by [@addyh](https://github.com/addyh).
+* **TWEAK:** Security improvements thanks to [@addyh](https://github.com/addyh).
 
 = 1.7.15.1 =
-* **FIX:** Addressed the CVE-2023-44477 security vulnerability.
-* **FIX:** Added html lang attribute to html tag in print view.
+* **FIX:** Addressed the [CVE-2023-44477](https://nvd.nist.gov/vuln/detail/CVE-2023-44477) security vulnerability.
+* **FIX:** Added html `lang` attribute to html tag in print view.
 * **FIX:** Added alt text to gallery images.
 
 = 1.7.13 =
@@ -297,7 +298,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.7.8.5 =
 * **FIX:** Fixed an issue with large spaces between the recipe template shortcodes
-* **FIX:** Fixed an issue with Vimeo videos in the gallery
+* **FIX:** Fixed an issue with [Vimeo](https://vimeo.com/) videos in the gallery
 
 = 1.7.8.4 =
 * **FIX:** Removed "Section Headings" from recipe schema output.
@@ -328,18 +329,18 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **TWEAK:** Widgets with images now load thumbnail sizes instead of the larger ones.
 
 = 1.7.5.2 =
-* **TWEAK:** Adds support for Cooked Pro 1.7.
+* **TWEAK:** Adds support for [Cooked Pro](https://cooked.pro/) 1.7.
 
 = 1.7.4 =
-* **TWEAK:** Moved Fotorama assets into plugin instead of relying on a CDN connection.
+* **TWEAK:** Moved [Fotorama](https://fotorama.io/) assets into plugin instead of relying on a CDN connection.
 * **TWEAK:** Removed "imagesLoaded" script (no longer needed).
-* **TWEAK:** Added new filter to single ingredient output (cooked_single_ingredient_html)
+* **TWEAK:** Added new filter to single ingredient output (`cooked_single_ingredient_html`)
 
 = 1.7.3 =
 * **FIX:** A minor fix (thank you to @zorkman777)
 
 = 1.7.2 =
-* **FIX:** Adds support for Cooked Pro v1.6 (redirect fixes)
+* **FIX:** Adds support for [Cooked Pro](https://cooked.pro/) v1.6 (redirect fixes)
 
 = 1.7.1 =
 * **TWEAK:** WordPress 5.2 support
@@ -350,7 +351,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **NEW:** Removed masonry javascript and let the recipe grid line up automatically with CSS.
 * **NEW:** Browse dropdown now includes both parent and child taxonomies. Long lists get a scrollable area.
 * **NEW:** Added an "exclude" property to the `[cooked-browse]` shortcode. You can now exclude specific recipes by their ID. [Learn More](https://demos.boxystudio.com/cooked/)
-* **NEW:** Added a "ding" sound to the end of timers. Use the "cooked_timer_sound_mp3" filter to change the MP3 file to anything you'd like (needs to be a publically available URL). [Learn More](https://demos.boxystudio.com/cooked/)
+* **NEW:** Added a "ding" sound to the end of timers. Use the `cooked_timer_sound_mp3` filter to change the MP3 file to anything you'd like (needs to be a publically available URL). [Learn More](https://demos.boxystudio.com/cooked/)
 * **FIX:** Fixed some missing ingredient fractions.
 * **FIX:** Fixed some minor PHP warnings.
 
@@ -362,7 +363,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **TWEAK:** Added new icon for BigOven save button (Pro feature).
 
 = 1.6.2 =
-* **FIX:** Added support for custom permalinks with slashes (i.e. "our-food/recipes").
+* **FIX:** Added support for custom permalinks with slashes (i.e. `our-food/recipes`).
 
 = 1.6.1 =
 * **FIX:** Fixed a bug with the search form when multiple searh forms are on one page.
@@ -377,14 +378,14 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.5.4 =
 * **FIX:** Some minor "difficulty level" label fixes.
-* **FIX:** Nutrition Facts now accepts "0" as an amount.
+* **FIX:** Nutrition Facts now accepts `0` as an amount.
 * **FIX:** Fixed the annoying "Settings Page Disappearing" issue!
 
 = 1.5.3 =
-* **NEW:** Elementor support. Now you can create your recipe templates with Elementor!
+* **NEW:** [Elementor](https://wordpress.org/plugins/elementor/) support. Now you can create your recipe templates with [Elementor](https://wordpress.org/plugins/elementor/)!
 
 = 1.5.2 =
-* **NEW:** Added a new "cooked_show_difficulty_level" filter so you can show whatever you want.
+* **NEW:** Added a new `cooked_show_difficulty_level` filter so you can show whatever you want.
 * **FIX:** Fixed an issue with the "Save as Default" and "Apply to All" feature.
 * **FIX:** Added a fix to prevent Gutenberg from breaking the recipe edit screen.
 * **FIX:** Fixed an unintentional redirect issue with the recipe RSS feed.
@@ -406,15 +407,15 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **FIX:** Fixed some issues with Recipe Schema output.
 
 = 1.4.2 =
-* **NEW:** Improved support for Yoast SEO (and other SEO plugins).
+* **NEW:** Improved support for [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/) (and other SEO plugins).
 * **NEW:** French translation added.
 * **FIX:** Fixed an issue with some incorrect Percent Daily Values on the front-end.
 * **FIX:** Fixed a padding issue on the recipe grid (on smaller screens).
-* **FIX:** Bug fixes for the WooCommerce Memberships' "Restrict Content" feature.
+* **FIX:** Bug fixes for the [WooCommerce](https://wordpress.org/plugins/woocommerce/) Memberships' "Restrict Content" feature.
 
 = 1.4.1 =
-* **NEW:** Added support for WooCommerce Memberships' "Restrict Content" feature.
-* **FIX:** Fixed some issues with the [cooked-browse] shortcode.
+* **NEW:** Added support for [WooCommerce](https://wordpress.org/plugins/woocommerce/) Memberships' "Restrict Content" feature.
+* **FIX:** Fixed some issues with the `[cooked-browse]` shortcode.
 
 = 1.4.0.3 =
 * **FIX:** Fixed an issue with pagination on recipe taxonomy templates.
@@ -422,7 +423,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 = 1.4.0.2 =
 * **NEW:** When viewing a parent category, it will now display sub-category items instead of recipes. This allows you to nicely nest your categories if desired.
 * **TWEAK:** Added some adjustments for "Dark Mode".
-* **TWEAK:** Added some adjustments to fix a few TwentySeventeen CSS conflicts.
+* **TWEAK:** Added some adjustments to fix a few [TwentySeventeen](https://wordpress.org/themes/twentyseventeen/) CSS conflicts.
 
 = 1.4.0.1 =
 * **FIX:** Fixed a major layout issue, sorry about that everyone!
@@ -435,7 +436,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **FIX:** Fixed some styling issues with the search bar.
 
 = 1.3.05 =
-* **TWEAK:** Minor adjustments to support the new Cooked Pro 1.1.
+* **TWEAK:** Minor adjustments to support the new [Cooked Pro](https://cooked.pro/) 1.1.
 
 = 1.3.04 =
 * **FIX:** Fixed some issues with the Settings page on some servers.
@@ -443,7 +444,7 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **TWEAK:** Tweaked the migration feature to support MUCH larger recipe collections.
 
 = 1.3.03 =
-* **FIX:** Fixes conflicts with the Cooked Pro plugin.
+* **FIX:** Fixes conflicts with the [Cooked Pro](https://cooked.pro/) plugin.
 * **TWEAK:** Updated the language template file.
 
 = 1.3.02 =
@@ -466,14 +467,14 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **FIX:** Fixed issues with the "Apply to All" template update feature.
 * **FIX:** Fixed issues with the Default Template saving/loading buttons.
 * **FIX:** Fixed an issue where "Authors" could not edit recipes.
-* **FIX:** Fixed an issue with WPML not being able to translate recipe information.
+* **FIX:** Fixed an issue with [WPML](https://wpml.org/) not being able to translate recipe information.
 
 = 1.2.0 =
 * **NEW:** **"Cooked - Recipe Search" Widget** — Display the recipe search form.
 * **NEW:** `[cooked-search]` — Display the recipe search form.
 * **NEW:** Added REST API support to recipes and recipe categories.
 * **TWEAK:** Added the same "search" shortcode options to `[cooked-browse]` so you can customize the recipe search bar from that shortcode as well. See the documentation for more shortcode options.
-* **TWEAK:** Added some hooks and filters to the welcome screen to add the ability to include the Cooked Pro changelog information there as well.
+* **TWEAK:** Added some hooks and filters to the welcome screen to add the ability to include the [Cooked Pro](https://cooked.pro/) changelog information there as well.
 * **TWEAK:** Direction images are formatted much better now (inline with the text and some margin below).
 * **TWEAK:** Added an option to disable the "Servings Switcher".
 * **TWEAK:** Converted all CSS "em" values to "rem" values.
@@ -482,25 +483,25 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 * **FIX:** Added some missing language strings.
 
 = 1.1.13 =
-* **NEW:** Added kg (kilograms) as a measurement option.
+* **NEW:** Added `kg` (kilograms) as a measurement option.
 * **FIX:** Fixed an issue where zeros were being removed from large numbers.
 * **FIX:** Recipes will now 404 if "Disable Public Recipes" is active.
 * **FIX:** Minor CSS adjustments throughout.
 
 = 1.1.12 =
-* Adjusted some code to support the upcoming Cooked Pro features.
+* Adjusted some code to support the upcoming [Cooked Pro](https://cooked.pro/) features.
 * Some minor text changes in the Settings panel.
 
 = 1.1.11 =
 * **FIX:** Fixed an issue with ingredient amounts getting rounded up to 1.
-* **FIX:** Fixed some theme compatibiltiy issues.
+* **FIX:** Fixed some theme compatibility issues.
 * **FIX:** Re-enabled structured data for recipes. Didn't mean to disable this, sorry!
 
 = 1.1.10 =
 * **NEW:** Ingredient amounts will now display as entered (fractions or decimals) in the number format based on your language settings.
 * **NEW:** Added taxonomy filter dropdowns to the admin recipe list page.
 * **NEW:** Added developer filters for customizing the "Percent Daily Value" calculations.
-* **FIX:** Added compatibility for the "Bridge" theme.
+* **FIX:** Added compatibility for the [Bridge](https://bridgetheme.com/) theme.
 
 = 1.1.9 =
 * **FIX:** Added "1/5" support to measurements.
@@ -510,19 +511,19 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 = 1.1.8 =
 * **NEW:** HTML is allowed in all ingredient/direction fields.
 * **FIX:** Fixed some redirect issues.
-* **FIX:** Some adjustments to support the upcoming Cooked Pro.
+* **FIX:** Some adjustments to support the upcoming [Cooked Pro](https://cooked.pro/) plugin.
 
 = 1.1.7 =
 * **FIX:** Fixed an issue with the Cooked settings screens if a non-English language is enabled.
-* **FIX:** Fixed an issue for when the "Browse Recipe Page" and "Single Recipe Post" slugs were the same (i.e. /recipes/). You can now use the same slug for both!
+* **FIX:** Fixed an issue for when the "Browse Recipe Page" and "Single Recipe Post" slugs were the same (i.e. `/recipes/`). You can now use the same slug for both!
 
 = 1.1.6 =
 * **NEW:** Tested and working in WordPress 4.8!
 * **NEW:** Custom checkbox toggles on the Settings page.
-* **FIX:** Fixed an issue with category redirects. There was a double slash being added that has now been resolved. Huge thanks to **@travelnlass** and **@kitcatsz** for finding this one!
+* **FIX:** Fixed an issue with category redirects. There was a double slash being added that has now been resolved. Huge thanks to [@travelnlass](https://profiles.wordpress.org/travelnlass/) and [@kitcatsz](https://profiles.wordpress.org/kitcatsz/) for finding this one!
 
 = 1.1.5 =
-* **FIX:** A lot more fixes for the [cooked-recipe] shortcode. Huge thanks to Zoe and Mariana for donating their time and websites to help me work out these issues!
+* **FIX:** A lot more fixes for the `[cooked-recipe]` shortcode. Huge thanks to Zoe and Mariana for donating their time and websites to help me work out these issues!
 * **NEW:** Added an advanced ability to "Disable Cooked `<meta>` Tags" when needed.
 * **NEW:** Added an advanced ability to "Disable Public Recipes" when needed.
 
@@ -536,18 +537,18 @@ Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode sty
 
 = 1.1.2 =
 * **FIX:** Fixed an error on the recipe author template.
-* **FIX:** More minor tweaks to support the upcoming Cooked Pro plugin.
+* **FIX:** More minor tweaks to support the upcoming [Cooked Pro](https://cooked.pro/) plugin.
 
 = 1.1.1 =
-* **FIX:** Compatibility improvements with the Yoast SEO plugin.
-* **FIX:** Some minor tweaks to support the upcoming Cooked Pro plugin.
+* **FIX:** Compatibility improvements with the [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/) plugin.
+* **FIX:** Some minor tweaks to support the upcoming [Cooked Pro](https://cooked.pro/) plugin.
 
 = 1.1.0 =
 * **NEW:** **Full-Screen Mode:** Just include "fullscreen" in the `[cooked-info]` shortcode. Really shines on mobile devices!
 * **NEW:** **Printable Recipes:** Just include "print" in the `[cooked-info]`shortcode. Includes some handy "a-la-carte" print options.
 * **FIX:** Some adjustments for layouts on smaller devices (responsive fixes).
 * **FIX:** Fixed an issue where quantities and amounts would not show up without a "Servings" setting. Now it works no matter what!
-* **FIX:** Minor code adjustments to better support Cooked Pro.
+* **FIX:** Minor code adjustments to better support [Cooked Pro](https://cooked.pro/).
 
 = 1.0.0 =
 * **NEW:** *Everything is new!*
