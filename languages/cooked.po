@@ -2720,3 +2720,84 @@ msgstr ""
 #: includes/class.cooked-recipe-meta.php:890
 msgid "Bulk Add"
 msgstr ""
+
+#: includes/class.cooked-allergens.php:75
+msgid "Recipe List Allergens"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:76
+msgid "Show allergen icons on recipe cards in browse and list views."
+msgstr ""
+
+#: includes/class.cooked-allergens.php:80
+msgid "Show Allergens on Recipe Cards"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:109
+#: includes/class.cooked-allergens.php:288
+#: includes/class.cooked-allergens.php:312
+#: includes/class.cooked-allergens.php:331
+msgid "Allergens"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:156
+msgid "Celery"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:160
+msgid "Crustacean shellfish"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:164
+msgid "Eggs"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:168
+msgid "Fish"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:172
+msgid "Lupin"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:176
+msgid "Milk"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:180
+msgid "Molluscs"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:184
+msgid "Mustard"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:188
+msgid "Peanuts"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:192
+msgid "Sesame"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:196
+msgid "Soybeans"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:200
+msgid "Sulphur dioxide and sulphites"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:204
+msgid "Tree nuts"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:208
+msgid "Wheat"
+msgstr ""
+
+#. translators: %s: allergen name
+#: includes/class.cooked-allergens.php:270
+#, php-format
+msgid "Contains %s"
+msgstr ""

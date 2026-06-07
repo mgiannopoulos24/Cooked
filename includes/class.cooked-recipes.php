@@ -622,7 +622,7 @@ class Cooked_Recipes {
     }
 
     public static function default_content() {
-        return apply_filters( 'cooked_default_content', '<p>[cooked-info left="author,taxonomies,difficulty" right="print,fullscreen"]</p><p>[cooked-excerpt]</p><p>[cooked-image]</p><p>[cooked-info left="servings" right="prep_time,cook_time,total_time"]</p><p>[cooked-ingredients]</p><p>[cooked-directions]</p><p>[cooked-notes show_header=true]</p><p>[cooked-gallery]</p>' );
+        return apply_filters( 'cooked_default_content', '<p>[cooked-info left="author,taxonomies,difficulty" right="print,fullscreen"]</p><p>[cooked-excerpt]</p><p>[cooked-image]</p><p>[cooked-info left="servings" right="prep_time,cook_time,total_time"]</p><p>[cooked-info left="allergens"]</p><p>[cooked-ingredients]</p><p>[cooked-directions]</p><p>[cooked-notes show_header=true]</p><p>[cooked-gallery]</p>' );
     }
 
     public static function print_content() {

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Cooked - Recipe Management 1.14.0\n"
+"Project-Id-Version: Cooked - Recipe Management 1.15.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cooked\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-18T23:32:28-04:00\n"
+"POT-Creation-Date: 2026-06-07T16:22:39-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: cooked\n"
@@ -327,6 +327,87 @@ msgstr ""
 
 #: includes/class.cooked-ajax.php:476
 msgid "No ingredients provided."
+msgstr ""
+
+#: includes/class.cooked-allergens.php:75
+msgid "Recipe List Allergens"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:76
+msgid "Show allergen icons on recipe cards in browse and list views."
+msgstr ""
+
+#: includes/class.cooked-allergens.php:80
+msgid "Show Allergens on Recipe Cards"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:109
+#: includes/class.cooked-allergens.php:288
+#: includes/class.cooked-allergens.php:312
+#: includes/class.cooked-allergens.php:331
+msgid "Allergens"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:156
+msgid "Celery"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:160
+msgid "Crustacean shellfish"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:164
+msgid "Eggs"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:168
+msgid "Fish"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:172
+msgid "Lupin"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:176
+msgid "Milk"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:180
+msgid "Molluscs"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:184
+msgid "Mustard"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:188
+msgid "Peanuts"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:192
+msgid "Sesame"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:196
+msgid "Soybeans"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:200
+msgid "Sulphur dioxide and sulphites"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:204
+msgid "Tree nuts"
+msgstr ""
+
+#: includes/class.cooked-allergens.php:208
+msgid "Wheat"
+msgstr ""
+
+#. translators: %s: allergen name
+#: includes/class.cooked-allergens.php:270
+#, php-format
+msgid "Contains %s"
 msgstr ""
 
 #: includes/class.cooked-cli.php:41
