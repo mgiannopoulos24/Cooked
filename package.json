@@ -60,7 +60,7 @@
     "gulp-uglify": "^3.0.2",
     "playwright": "^1.60.0",
     "sass": "^1.100.0",
-    "@wordpress/env": "^10.39.0",
-    "bestzip": "^2.2.5"
+    "@wordpress/env": "^11.6.0",
+    "bestzip": "^3.0.1"
   }
 }
