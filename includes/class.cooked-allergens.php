@@ -13,7 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Cooked_Allergens Class
  *
- * Handles allergen display on recipe cards and single recipe views.
+ * Handles allergen storage, admin UI, recipe card icons,
+ * and the `allergens` field for the [cooked-info] shortcode.
  *
  * @since 1.15.0
  */
@@ -25,17 +26,76 @@ class Cooked_Allergens {
      * @since 1.15.0
      */
     public static function init() {
-        // Admin: Add allergen meta box to sidebar
         add_action( 'add_meta_boxes', [ __CLASS__, 'register_meta_box' ] );
 
-        // Admin: Add shortcode documentation
-        add_action( 'cooked_recipe_shortcodes_after', [ __CLASS__, 'shortcode_documentation' ] );
+        foreach ( self::get_recipe_card_hooks() as $hook ) {
+            add_action( $hook, [ __CLASS__, 'render_from_recipe' ], 10 );
+        }
 
-        // Frontend: Display allergens on recipe cards
-        add_action( 'cooked_recipe_grid_after_name', [ __CLASS__, 'render_from_recipe' ], 10 );
+        add_filter( 'cooked_settings_tabs_fields', [ __CLASS__, 'settings_tabs_fields' ], 11 );
 
-        // Frontend: Display allergens on single recipe (via shortcode)
-        add_shortcode( 'cooked-allergens', [ __CLASS__, 'shortcode' ] );
+        // [cooked-info] integration
+        add_filter( 'cooked_default_info_array', [ __CLASS__, 'register_info_field' ] );
+        add_filter( 'cooked_available_info_shortcode_methods', [ __CLASS__, 'register_info_method' ] );
+        add_filter( 'cooked_available_info_vars', [ __CLASS__, 'register_info_var' ] );
+    }
+
+    /**
+     * Recipe card hooks used by Cooked list styles.
+     *
+     * @since 1.15.0
+     * @return array
+     */
+    public static function get_recipe_card_hooks() {
+        return apply_filters( 'cooked_recipe_card_allergen_hooks', [
+            'cooked_recipe_grid_after_name',
+            'cooked_recipe_modern_after_name',
+            'cooked_recipe_full_after_name',
+        ] );
+    }
+
+    /**
+     * Add allergen display settings to the General settings tab.
+     *
+     * @since 1.15.0
+     * @param array $settings Settings tabs and fields.
+     * @return array
+     */
+    public static function settings_tabs_fields( $settings ) {
+        if ( ! isset( $settings['recipe_settings']['fields'] ) ) {
+            return $settings;
+        }
+
+        $after = isset( $settings['recipe_settings']['fields']['recipe_list_style'] )
+            ? 'recipe_list_style'
+            : 'browse_page';
+
+        Cooked_Functions::array_splice_assoc( $settings['recipe_settings']['fields'], $after, 0, [
+            'recipe_list_allergens' => [
+                'title' => __( 'Recipe List Allergens', 'cooked' ),
+                'desc'  => __( 'Show allergen icons on recipe cards in browse and list views.', 'cooked' ),
+                'type'  => 'checkboxes',
+                'default' => [],
+                'options' => [
+                    'enabled' => __( 'Show Allergens on Recipe Cards', 'cooked' ),
+                ],
+            ],
+        ] );
+
+        return $settings;
+    }
+
+    /**
+     * Whether allergen icons should display on recipe list cards.
+     *
+     * @since 1.15.0
+     * @return bool
+     */
+    public static function show_on_recipe_cards() {
+        global $_cooked_settings;
+
+        return ! empty( $_cooked_settings['recipe_list_allergens'] )
+            && in_array( 'enabled', (array) $_cooked_settings['recipe_list_allergens'], true );
     }
 
     /**
@@ -74,7 +134,9 @@ class Cooked_Allergens {
                         name="_recipe_settings[allergens][]"
                         value="<?php echo esc_attr( $key ); ?>"
                         <?php checked( in_array( $key, $selected, true ) ); ?>>
-                    <span class="cooked-allergen-badge" style="background-color:<?php echo esc_attr( $allergen['color'] ); ?>;"><?php echo esc_html( $allergen['abbr'] ); ?></span>
+                    <span class="cooked-allergen cooked-allergen-<?php echo esc_attr( $key ); ?>">
+                        <i class="cooked-icon <?php echo esc_attr( self::get_icon_class( $allergen ) ); ?>" aria-hidden="true"></i>
+                    </span>
                     <span class="cooked-allergen-label"><?php echo esc_html( $allergen['label'] ); ?></span>
                 </label>
             <?php endforeach; ?>
@@ -83,59 +145,81 @@ class Cooked_Allergens {
     }
 
     /**
-     * Get the list of FDA major allergens.
+     * Get the list of major allergens (FDA + EU).
      *
      * @since 1.15.0
      * @return array
      */
     public static function get_allergens() {
         return apply_filters( 'cooked_allergens', [
-            'milk' => [
-                'label' => __( 'Milk', 'cooked' ),
-                'abbr'  => 'M',
-                'color' => '#6b9ac4',
+            'celery' => [
+                'label' => __( 'Celery', 'cooked' ),
+                'icon'  => 'allergen-celery',
+            ],
+            'shellfish' => [
+                'label' => __( 'Crustacean shellfish', 'cooked' ),
+                'icon'  => 'allergen-shellfish',
             ],
             'eggs' => [
                 'label' => __( 'Eggs', 'cooked' ),
-                'abbr'  => 'E',
-                'color' => '#d4a84b',
+                'icon'  => 'allergen-egg',
             ],
             'fish' => [
                 'label' => __( 'Fish', 'cooked' ),
-                'abbr'  => 'F',
-                'color' => '#5a9a9a',
+                'icon'  => 'allergen-fish',
             ],
-            'shellfish' => [
-                'label' => __( 'Shellfish', 'cooked' ),
-                'abbr'  => 'SF',
-                'color' => '#c97c7c',
+            'lupin' => [
+                'label' => __( 'Lupin', 'cooked' ),
+                'icon'  => 'allergen-lupin',
             ],
-            'tree_nuts' => [
-                'label' => __( 'Tree Nuts', 'cooked' ),
-                'abbr'  => 'TN',
-                'color' => '#8b7355',
+            'milk' => [
+                'label' => __( 'Milk', 'cooked' ),
+                'icon'  => 'allergen-milk',
+            ],
+            'molluscs' => [
+                'label' => __( 'Molluscs', 'cooked' ),
+                'icon'  => 'allergen-molluscs',
+            ],
+            'mustard' => [
+                'label' => __( 'Mustard', 'cooked' ),
+                'icon'  => 'allergen-mustard',
             ],
             'peanuts' => [
                 'label' => __( 'Peanuts', 'cooked' ),
-                'abbr'  => 'P',
-                'color' => '#c4a35a',
-            ],
-            'wheat' => [
-                'label' => __( 'Wheat', 'cooked' ),
-                'abbr'  => 'W',
-                'color' => '#c9a227',
-            ],
-            'soybeans' => [
-                'label' => __( 'Soybeans', 'cooked' ),
-                'abbr'  => 'SB',
-                'color' => '#7a9a5a',
+                'icon'  => 'allergen-peanut',
             ],
             'sesame' => [
                 'label' => __( 'Sesame', 'cooked' ),
-                'abbr'  => 'SE',
-                'color' => '#a89a8a',
+                'icon'  => 'allergen-sesame',
+            ],
+            'soybeans' => [
+                'label' => __( 'Soybeans', 'cooked' ),
+                'icon'  => 'allergen-soy',
+            ],
+            'sulphites' => [
+                'label' => __( 'Sulphur dioxide and sulphites', 'cooked' ),
+                'icon'  => 'allergen-sulphites',
+            ],
+            'tree_nuts' => [
+                'label' => __( 'Tree nuts', 'cooked' ),
+                'icon'  => 'allergen-tree-nut',
+            ],
+            'wheat' => [
+                'label' => __( 'Wheat', 'cooked' ),
+                'icon'  => 'allergen-wheat',
             ],
         ] );
+    }
+
+    /**
+     * Get the CookedIcons class for an allergen.
+     *
+     * @since 1.15.0
+     * @param array $allergen Allergen definition.
+     * @return string
+     */
+    public static function get_icon_class( $allergen ) {
+        return 'cooked-icon-' . $allergen['icon'];
     }
 
     /**
@@ -145,6 +229,10 @@ class Cooked_Allergens {
      * @param array $recipe Recipe data array with 'id' key.
      */
     public static function render_from_recipe( $recipe ) {
+        if ( ! self::show_on_recipe_cards() ) {
+            return;
+        }
+
         if ( empty( $recipe['id'] ) ) {
             return;
         }
@@ -176,12 +264,11 @@ class Cooked_Allergens {
 
             $allergen = $allergens[ $key ];
             $output .= sprintf(
-                '<span class="cooked-allergen cooked-allergen-%s" title="%s" style="background-color:%s;">%s</span>',
+                '<span class="cooked-allergen cooked-allergen-%1$s" title="%2$s"><i class="cooked-icon %3$s" aria-hidden="true"></i></span>',
                 esc_attr( $key ),
                 /* translators: %s: allergen name */
                 esc_attr( sprintf( __( 'Contains %s', 'cooked' ), $allergen['label'] ) ),
-                esc_attr( $allergen['color'] ),
-                esc_html( $allergen['abbr'] )
+                esc_attr( self::get_icon_class( $allergen ) )
             );
         }
 
@@ -191,64 +278,61 @@ class Cooked_Allergens {
     }
 
     /**
-     * Shortcode handler for displaying allergens.
-     *
-     * Usage: [cooked-allergens] or [cooked-allergens id="123"]
+     * Register `allergens` in the [cooked-info] default info array.
      *
      * @since 1.15.0
-     * @param array $atts Shortcode attributes.
-     * @return string HTML output.
+     * @param array $info Default info array.
+     * @return array
      */
-    public static function shortcode( $atts ) {
-        global $post;
-
-        $atts = shortcode_atts( [
-            'id' => $post ? $post->ID : 0,
-        ], $atts, 'cooked-allergens' );
-
-        $recipe_id = intval( $atts['id'] );
-        if ( ! $recipe_id ) {
-            return '';
-        }
-
-        $recipe_settings = Cooked_Recipes::get_settings( $recipe_id );
-        return self::render( $recipe_settings );
+    public static function register_info_field( $info ) {
+        $info['allergens'] = __( 'Allergens', 'cooked' );
+        return $info;
     }
 
     /**
-     * Render shortcode documentation in the Shortcodes tab.
+     * Register the handler that renders the `allergens` info field.
      *
      * @since 1.15.0
+     * @param array $methods Method map keyed by function name.
+     * @return array
      */
-    public static function shortcode_documentation() {
-        ?>
-        <hr class="cooked-hr">
+    public static function register_info_method( $methods ) {
+        $methods['cooked_info_allergens'] = __CLASS__;
+        return $methods;
+    }
 
-        <!-- [cooked-allergens] -->
-        <div class="cooked-clearfix">
+    /**
+     * Add `allergens` to the documented variables in the Shortcodes tab.
+     *
+     * @since 1.15.0
+     * @param array $vars Documented variables.
+     * @return array
+     */
+    public static function register_info_var( $vars ) {
+        $vars['allergens'] = __( 'Allergens', 'cooked' );
+        return $vars;
+    }
 
-            <div class="cooked-setting-column-23">
+    /**
+     * [cooked-info] handler for the `allergens` field.
+     *
+     * Outputs nothing when no allergens are selected on the recipe.
+     *
+     * @since 1.15.0
+     * @param array $recipe_settings Recipe settings array.
+     */
+    public static function cooked_info_allergens( $recipe_settings ) {
+        $html = self::render( $recipe_settings );
+        if ( ! $html ) {
+            return;
+        }
 
-                <h3 class="cooked-settings-title cooked-bm-0"><?php _e( 'Allergens', 'cooked' ); ?></h3>
-                <p class="cooked-bm-10"><?php _e( 'This will display the allergen badges for this recipe, if any are selected.', 'cooked' ); ?></p>
-                <div class="cooked-bm-20 cooked-block">
-                    <input class='cooked-shortcode-field' type='text' readonly value='[cooked-allergens]' />
-                </div>
-
-            </div>
-
-            <div class="cooked-setting-column-13">
-                <p class="cooked-bm-10 cooked-tm-10"><strong class="cooked-heading"><?php _e( 'Available Variables', 'cooked' ); ?></strong></p>
-                <p class="cooked-bm-10">
-                    <em><?php _e( 'None', 'cooked' ); ?></em>
-                </p>
-            </div>
-
-        </div>
-        <?php
+        echo '<span class="cooked-allergens-info">';
+        echo '<strong class="cooked-meta-title">' . esc_html__( 'Allergens', 'cooked' ) . '</strong>';
+        echo $html;
+        echo '</span>';
     }
 
 }
 
-// Initialize
 add_action( 'init', [ 'Cooked_Allergens', 'init' ] );

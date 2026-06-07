@@ -80,12 +80,12 @@ Please report security bugs found in the source code of the Cooked plugin throug
 
 == Upgrade Notice ==
 
-Version 1.15.0 adds the [cooked-allergens] shortcode to display allergen badges on recipe cards and single recipe views.
+Version 1.15.0 adds allergen badges to recipe cards and single recipe views via the [cooked-info] shortcode (`include="allergens"`).
 
 == Changelog ==
 
 = 1.15.0 =
-* **NEW:** Added the [cooked-allergens] shortcode to display allergen badges on recipe cards and single recipe views.
+* **NEW:** Added allergen support. Mark up to 14 major allergens (FDA + EU) on a recipe via a new sidebar meta box. Allergen icons are shown automatically on recipe cards and can be added to single recipes via `[cooked-info include="allergens"]`.
 
 = 1.14.0 =
 * **NEW:** Added a new "Add Bulk Ingredients" and "Add Bulk Directions" buttons to the recipe builder.

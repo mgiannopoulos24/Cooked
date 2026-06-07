@@ -1961,11 +1961,11 @@ body.cooked-fsm-active #wpadminbar {
     }
 }
 
-/* Allergen Badges */
+/* Allergen Icons */
 .cooked-allergens {
     display: inline-flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 6px;
     margin: 6px 0 0 0;
     vertical-align: middle;
 }
@@ -1974,16 +1974,21 @@ body.cooked-fsm-active #wpadminbar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 5px;
-    border-radius: 11px;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-transform: uppercase;
     cursor: default;
+}
+
+.cooked-allergen .cooked-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.cooked-allergen,
+.cooked-allergen .cooked-icon {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.cooked-allergen:hover .cooked-icon {
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .cooked-recipe-card .cooked-allergens {
@@ -1993,4 +1998,23 @@ body.cooked-fsm-active #wpadminbar {
 
 .cooked-recipe-card-modern-centered .cooked-allergens {
     justify-content: center;
+}
+
+.cooked-recipe-full .cooked-allergens {
+    display: flex;
+    margin: 0 0 1rem;
+}
+
+.cooked-recipe-fitness .cooked-allergens,
+.cooked-recipe-modern .cooked-allergens {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1rem 0.4rem;
+}
+
+.cooked-recipe-info .cooked-allergens-info .cooked-allergens {
+    display: inline-flex;
+    margin: 0;
+    vertical-align: middle;
 }
