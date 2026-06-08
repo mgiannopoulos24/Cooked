@@ -41,6 +41,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 define( 'COOKED_DEV', false );
 define( 'COOKED_VERSION', '1.14.0' );
+define( 'COOKED_DEV', true );
+define( 'COOKED_VERSION', '1.15.0' );
 
 if ( ! class_exists( 'Cooked_Plugin' ) ) :
 
@@ -493,6 +495,7 @@ final class Cooked_Plugin {
         require_once COOKED_DIR . 'includes/class.cooked-elementor.php';
         require_once COOKED_DIR . 'includes/class.cooked-plugin-extra.php';
         require_once COOKED_DIR . 'includes/class.cooked-multilingual.php';
+        require_once COOKED_DIR . 'includes/class.cooked-allergens.php';
 
         if ( defined( 'WP_CLI' ) && WP_CLI ) {
             require_once COOKED_DIR . 'includes/class.cooked-cli.php';

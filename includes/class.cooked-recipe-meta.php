@@ -21,6 +21,7 @@ class Cooked_Recipe_Meta {
     function __construct() {
         add_action( 'add_meta_boxes', [&$this, 'add_recipe_meta_box'] );
         add_action( 'save_post', [&$this, 'save_recipe_meta_box'] );
+        add_action( 'admin_notices', [&$this, 'recipe_embed_shortcode_admin_notice'] );
     }
 
     public static function meta_cleanup( $recipe_settings ) {
@@ -190,6 +191,33 @@ class Cooked_Recipe_Meta {
 
         // Re-hook this function
         add_action( 'save_post', [&$this, 'save_recipe_meta_box'] );
+    }
+
+    public function recipe_embed_shortcode_admin_notice() {
+        $screen = get_current_screen();
+        if ( ! $screen || $screen->post_type !== 'cp_recipe' || $screen->base !== 'post' ) {
+            return;
+        }
+
+        global $post;
+        if ( ! $post || ! isset( $post->ID ) ) {
+            return;
+        }
+
+        $recipe_settings = get_post_meta( $post->ID, '_recipe_settings', true );
+        if ( ! Cooked_Recipes::settings_have_self_recipe_embed_shortcode( $recipe_settings, $post->ID ) ) {
+            return;
+        }
+
+        $shortcode = '[cooked-recipe id="' . intval( $post->ID ) . '"]';
+
+        printf(
+            '<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+            sprintf(
+                __( 'This recipe is set up to include itself in the Recipe Template (containing shortcode %s), which can break the page. Remove the embed that references this same recipe.', 'cooked' ),
+                $shortcode
+            )
+        );
     }
 
     /**

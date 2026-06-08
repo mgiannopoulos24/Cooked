@@ -3,7 +3,7 @@ Contributors: xjsv, boxystudio
 Tags: recipe, recipes, food, cooking, nutrition
 Requires at least: 5.0.0
 Tested up to: 7.0
-Stable tag: 1.14.0
+Stable tag: 1.15.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -81,9 +81,12 @@ Please report security bugs found in the source code of the Cooked plugin throug
 
 == Upgrade Notice ==
 
-Version 1.14.0 adds bulk ingredient and direction entry, validates shortcode style attributes, extends migration and imports with ingredient substitution fields, and speeds up “Apply to All” template updates on large sites.
+Version 1.15.0 adds allergen badges to recipe cards and single recipe views via the [cooked-info] shortcode (`include="allergens"`).
 
 == Changelog ==
+
+= 1.15.0 =
+* **NEW:** Added allergen support. Mark up to 14 major allergens (FDA + EU) on a recipe via a new sidebar meta box. Allergen icons are shown automatically on recipe cards and can be added to single recipes via `[cooked-info include="allergens"]`.
 
 = 1.14.0 =
 * **NEW:** Added a new "Add Bulk Ingredients" and "Add Bulk Directions" buttons to the recipe builder.

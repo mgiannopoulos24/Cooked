@@ -20,6 +20,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 class Cooked_Shortcodes {
 
+    /**
+     * Recipe IDs currently being rendered by [cooked-recipe] in this request.
+     *
+     * @var int[]
+     */
+    private static $recipe_embed_stack = [];
+
     function __construct() {
         // Allow shortcodes in widgets
         add_filter( 'widget_text', 'do_shortcode' );
@@ -289,22 +296,42 @@ class Cooked_Shortcodes {
 
         global $recipe_settings, $_cooked_content_unfiltered;
 
-        ob_start();
-
         $recipe_id = intval( $atts['id'] );
 
-        if ( $recipe_id ) {
-
-            $recipe_settings = Cooked_Recipes::get( $recipe_id, true );
-            if ( !$recipe_settings || $recipe_settings && empty( $recipe_settings ) ) {
-                return wpautop( '<strong>[cooked-recipe id="' . intval( $recipe_id ) . '"]</strong><br><em>' . __( '(recipe not found or in draft status)', 'cooked' ) . '</em>' );
-            } else {
-                load_template( COOKED_DIR . 'templates/front/recipe.php', false );
-            }
-
+        if ( ! $recipe_id ) {
+            return '';
         }
 
-        return do_shortcode( ob_get_clean() );
+        if ( in_array( $recipe_id, self::$recipe_embed_stack, true ) ) {
+            return self::recipe_embed_blocked_message( $recipe_id );
+        }
+
+        $recipe_settings = Cooked_Recipes::get( $recipe_id, true );
+        if ( ! $recipe_settings || empty( $recipe_settings ) ) {
+            return wpautop( '<strong>[cooked-recipe id="' . intval( $recipe_id ) . '"]</strong><br><em>' . __( '(recipe not found or in draft status)', 'cooked' ) . '</em>' );
+        }
+
+        self::$recipe_embed_stack[] = $recipe_id;
+
+        try {
+            ob_start();
+            load_template( COOKED_DIR . 'templates/front/recipe.php', false );
+            return do_shortcode( ob_get_clean() );
+        } finally {
+            array_pop( self::$recipe_embed_stack );
+        }
+    }
+
+    private static function recipe_embed_blocked_message( $recipe_id ) {
+        $shortcode = '[cooked-recipe id="' . intval( $recipe_id ) . '"]';
+        $message = '<em>' . sprintf(
+            __( 'This recipe could not be displayed because it is set up to include itself (containing shortcode %s). Remove the duplicate recipe embed from the Recipe Template.', 'cooked' ),
+            $shortcode
+        ) . '</em>';
+
+        $message = apply_filters( 'cooked_recipe_embed_blocked_message', $message, $recipe_id, self::$recipe_embed_stack );
+
+        return wpautop( $message );
     }
 
     public function cooked_gallery_shortcode($atts, $content = null) {
