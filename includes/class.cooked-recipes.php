@@ -621,6 +621,49 @@ class Cooked_Recipes {
         return '<div class="cooked-pagination-numbered cooked-clearfix">' . paginate_links( $recipe_pagination ) . '</div>';
     }
 
+    public static function content_has_self_recipe_embed_shortcode( $content, $recipe_id ) {
+        if ( ! is_string( $content ) || ! $recipe_id ) {
+            return false;
+        }
+
+        $recipe_id = intval( $recipe_id );
+
+        if ( ! preg_match_all( '#\[cooked-recipe\b[^\]]*\bid\s*=\s*["\']?(\d+)#i', $content, $matches ) ) {
+            return false;
+        }
+
+        foreach ( $matches[1] as $embedded_id ) {
+            if ( intval( $embedded_id ) === $recipe_id ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static function settings_have_self_recipe_embed_shortcode( $recipe_settings, $post_id ) {
+        if ( ! is_array( $recipe_settings ) || empty( $recipe_settings ) || ! $post_id ) {
+            return false;
+        }
+
+        $fields = [ 'content', 'notes', 'excerpt' ];
+        foreach ( $fields as $field ) {
+            if ( ! empty( $recipe_settings[ $field ] ) && self::content_has_self_recipe_embed_shortcode( $recipe_settings[ $field ], $post_id ) ) {
+                return true;
+            }
+        }
+
+        if ( ! empty( $recipe_settings['directions'] ) && is_array( $recipe_settings['directions'] ) ) {
+            foreach ( $recipe_settings['directions'] as $direction ) {
+                if ( ! empty( $direction['content'] ) && self::content_has_self_recipe_embed_shortcode( $direction['content'], $post_id ) ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static function default_content() {
         return apply_filters( 'cooked_default_content', '<p>[cooked-info left="author,taxonomies,difficulty" right="print,fullscreen"]</p><p>[cooked-excerpt]</p><p>[cooked-image]</p><p>[cooked-info left="servings" right="prep_time,cook_time,total_time"]</p><p>[cooked-info left="allergens"]</p><p>[cooked-ingredients]</p><p>[cooked-directions]</p><p>[cooked-notes show_header=true]</p><p>[cooked-gallery]</p>' );
     }
