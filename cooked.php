@@ -5,7 +5,7 @@
  * Description: 	    A recipe plugin for WordPress.
  * Author:              Gora Tech
  * Author URI: 	        https://goratech.dev
- * Version: 		    1.14.0
+ * Version: 		    1.15.0
  * Text Domain: 	    cooked
  * Domain Path: 	    /languages
  * License:     	    GPL2
