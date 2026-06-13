@@ -11,7 +11,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // Delete all plugin options.
-$options = [
+$options = array(
 	'cooked_settings',
 	'cooked_settings_saved',
 	'cooked_version',
@@ -21,7 +21,7 @@ $options = [
 	'cooked_wp_recipe_maker_imported',
 	'cooked_related_version',
 	'cooked_related_calculation_last',
-];
+);
 
 foreach ( $options as $option ) {
 	delete_option( $option );
@@ -39,14 +39,14 @@ $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_c
 if ( class_exists( 'WP_Roles' ) ) {
 	$wp_roles = new WP_Roles();
 
-	$roles = [ 'subscriber', 'contributor', 'author', 'editor', 'cooked_recipe_editor', 'administrator' ];
-	$caps  = [
+	$roles = array( 'subscriber', 'contributor', 'author', 'editor', 'cooked_recipe_editor', 'administrator' );
+	$caps  = array(
 		'edit_cooked_recipes',
 		'edit_cooked_settings',
 		'approve_cooked_recipes',
 		'delete_cooked_recipes',
 		'edit_cooked_default_template',
-	];
+	);
 
 	foreach ( $roles as $role ) {
 		foreach ( $caps as $cap ) {

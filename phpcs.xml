@@ -39,6 +39,14 @@
 		<exclude-pattern>cooked.php</exclude-pattern>
 	</rule>
 
+	<rule ref="WordPress.DB.DirectDatabaseQuery">
+    <exclude-pattern>*.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>*.php</exclude-pattern>
+	</rule>
+
 	<!-- Custom capabilities -->
 	<rule ref="WordPress.WP.Capabilities">
 		<properties>
