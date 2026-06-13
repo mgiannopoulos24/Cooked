@@ -8,7 +8,7 @@
  * Version: 		    1.15.0
  * Text Domain: 	    cooked
  * Domain Path: 	    /languages
- * License:     	    GPL2
+ * License:     	    GPLv2 or later
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least:   6.8
  * Tested up to:        7.0
