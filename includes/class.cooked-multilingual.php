@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Multilingual Support
- * @since       1.13.0
+ * @since       1.12.0
  */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * This class handles multilingual plugin support (Polylang, WPML, etc.).
  *
- * @since 1.13.0
+ * @since 1.12.0
  */
 class Cooked_Multilingual {
 
