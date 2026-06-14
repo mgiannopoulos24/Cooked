@@ -283,6 +283,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  * Load plugin class files needed for testing
  */
 require_once COOKED_DIR . 'includes/class.cooked-measurements.php';
+require_once COOKED_DIR . 'includes/class.cooked-unit-converter.php';
 require_once COOKED_DIR . 'includes/class.cooked-functions.php';
 require_once COOKED_DIR . 'includes/class.cooked-recipes.php';
 require_once COOKED_DIR . 'includes/class.cooked-multilingual.php';
