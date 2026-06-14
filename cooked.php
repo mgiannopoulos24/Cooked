@@ -482,6 +482,7 @@ final class Cooked_Plugin {
         require_once COOKED_DIR . 'includes/class.cooked-recipe-meta.php';
         require_once COOKED_DIR . 'includes/class.cooked-shortcodes.php';
         require_once COOKED_DIR . 'includes/class.cooked-measurements.php';
+        require_once COOKED_DIR . 'includes/class.cooked-unit-converter.php';
         require_once COOKED_DIR . 'includes/class.cooked-admin-enqueues.php';
         require_once COOKED_DIR . 'includes/class.cooked-enqueues.php';
         require_once COOKED_DIR . 'includes/class.cooked-admin-menus.php';

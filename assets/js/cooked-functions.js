@@ -75,7 +75,24 @@ var cooked_loading = false;
     		});
     	}
 
-       /****   5. Browse Search Button   ****/
+        /****   4b. Measurement System Switcher   ****/
+
+        if ( $('.cooked-measurement-system').length ) {
+            var msSelectField = $('.cooked-measurement-system').find('select');
+            msSelectField.on('change', function(e) {
+                e.preventDefault();
+                var ms = $(this).children("option:selected").val();
+                const url = new URL(window.location.href);
+                if ( ms ) {
+                    url.searchParams.set('measurement_system', ms);
+                } else {
+                    url.searchParams.delete('measurement_system');
+                }
+                window.location.href = url.toString();
+            });
+        }
+
+        /****   5. Browse Search Button   ****/
 
         if ( $_Cooked_Recipe_Search.length ) {
            $('body').on( 'click',function(e) {

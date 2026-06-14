@@ -862,6 +862,32 @@ class Cooked_Recipes {
         return $gallery_types;
     }
 
+    public static function measurement_system_switcher() {
+        global $_cooked_settings, $post;
+        $switcher_disabled = ( isset( $_cooked_settings['advanced'] ) && in_array( 'disable_measurement_switcher', $_cooked_settings['advanced'] ) ? true : false );
+        $printing = ( is_singular('cp_recipe') && isset($_GET['print']) );
+
+        if ( !$printing && !$switcher_disabled ):
+            $current = esc_html( get_query_var( 'measurement_system', '' ) );
+            $labels = [
+                '' => __( 'Default', 'cooked' ),
+                'metric' => __( 'Metric', 'cooked' ),
+                'imperial' => __( 'Imperial', 'cooked' ),
+            ];
+            $current_label = isset( $labels[ $current ] ) ? $labels[ $current ] : $labels[''];
+            echo '<span class="cooked-measurement-system"><span class="cooked-measurement-system-icon"><i class="cooked-icon cooked-icon-gear"></i></span>';
+                echo '<strong class="cooked-meta-title">' . __( 'Units', 'cooked' ) . '</strong>';
+                echo '<a aria-label="' . esc_attr( $current_label ) . '" href="#">' . esc_html( $current_label ) . '</a>';
+                echo '<label for="cooked-measurement-system-changer" class="screen-reader-text">' . __( 'Measurement System', 'cooked' ) . '</label>';
+                echo '<select id="cooked-measurement-system-changer" name="measurement_system" class="cooked-measurement-system-changer">';
+                    echo '<option value=""' . selected( $current, '', false ) . '>' . esc_attr( $labels[''] ) . '</option>';
+                    echo '<option value="metric"' . selected( $current, 'metric', false ) . '>' . esc_attr( $labels['metric'] ) . '</option>';
+                    echo '<option value="imperial"' . selected( $current, 'imperial', false ) . '>' . esc_attr( $labels['imperial'] ) . '</option>';
+                echo '</select>';
+            echo '</span>';
+        endif;
+    }
+
     public static function serving_size_switcher( $servings ) {
         global $_cooked_settings, $post;
         $switcher_disabled = ( isset( $_cooked_settings['advanced'] ) && in_array( 'disable_servings_switcher', $_cooked_settings['advanced'] ) ? true : false );
@@ -980,8 +1006,26 @@ class Cooked_Recipes {
                 }
             }
 
-            $measurement = ( isset($ing['measurement']) && $ing['measurement'] ? esc_html( $ing['measurement'] ) : false );
-            $measurement = ( $measurement && $float_amount ? $Cooked_Measurements->singular_plural( $measurements[ $measurement ]['singular_abbr'], $measurements[ $measurement ]['plural_abbr'], $float_amount ) : false );
+            $measurement_key = ( isset($ing['measurement']) && $ing['measurement'] ? esc_html( $ing['measurement'] ) : false );
+
+            $measurement_system = get_query_var( 'measurement_system', '' );
+            if ( $measurement_system && $measurement_key && $float_amount && isset( $measurements[ $measurement_key ]['system'] ) ) {
+                $source_system = $measurements[ $measurement_key ]['system'];
+                if ( $source_system && $source_system !== $measurement_system ) {
+                    $converter = new Cooked_Unit_Converter();
+                    $result = $converter->convert( $float_amount, $measurement_key );
+                    if ( $result ) {
+                        $float_amount = $result['amount'];
+                        $measurement_key = $result['unit'];
+                        if ( $float_amount > 10 ) {
+                            $format = 'decimal';
+                        }
+                        $amount = $Cooked_Measurements->format_amount( $float_amount, $format );
+                    }
+                }
+            }
+
+            $measurement = ( $measurement_key && $float_amount && isset( $measurements[ $measurement_key ] ) ? $Cooked_Measurements->singular_plural( $measurements[ $measurement_key ]['singular_abbr'], $measurements[ $measurement_key ]['plural_abbr'], $float_amount ) : false );
 
             $name = ( isset($ing['name']) && $ing['name'] ? apply_filters( 'cooked_ingredient_name', wp_kses_post( $ing['name'] ), $ing ) : false );
 
@@ -1011,6 +1055,22 @@ class Cooked_Recipes {
                 }
 
                 $sub_measurement_key = ( isset($ing['sub_measurement']) && $ing['sub_measurement'] ? esc_html( $ing['sub_measurement'] ) : false );
+
+                if ( $measurement_system && $sub_measurement_key && $sub_float_amount && isset( $measurements[ $sub_measurement_key ]['system'] ) ) {
+                    $sub_source_system = $measurements[ $sub_measurement_key ]['system'];
+                    if ( $sub_source_system && $sub_source_system !== $measurement_system ) {
+                        $sub_result = $converter->convert( $sub_float_amount, $sub_measurement_key );
+                        if ( $sub_result ) {
+                            $sub_float_amount = $sub_result['amount'];
+                            $sub_measurement_key = $sub_result['unit'];
+                            if ( $sub_float_amount > 10 ) {
+                                $sub_format = 'decimal';
+                            }
+                            $sub_amount = $Cooked_Measurements->format_amount( $sub_float_amount, $sub_format );
+                        }
+                    }
+                }
+
                 $sub_measurement = ( $sub_measurement_key && $sub_float_amount && isset($measurements[$sub_measurement_key]) ? $Cooked_Measurements->singular_plural( $measurements[ $sub_measurement_key ]['singular_abbr'], $measurements[ $sub_measurement_key ]['plural_abbr'], $sub_float_amount ) : false );
             }
 
