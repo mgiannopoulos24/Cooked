@@ -1012,8 +1012,8 @@ class Cooked_Recipes {
             if ( $measurement_system && $measurement_key && $float_amount && isset( $measurements[ $measurement_key ]['system'] ) ) {
                 $source_system = $measurements[ $measurement_key ]['system'];
                 if ( $source_system && $source_system !== $measurement_system ) {
-                    $converter = new Cooked_Unit_Converter();
-                    $result = $converter->convert( $float_amount, $measurement_key );
+                    $target = Cooked_Unit_Converter::get_target_unit( $measurement_key );
+                    $result = $target ? Cooked_Unit_Converter::convert( $float_amount, $measurement_key, $target ) : null;
                     if ( $result ) {
                         $float_amount = $result['amount'];
                         $measurement_key = $result['unit'];

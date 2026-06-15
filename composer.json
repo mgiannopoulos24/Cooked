@@ -32,7 +32,8 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.4.0",
-        "nxp/math-executor": "^2.3"
+        "nxp/math-executor": "^2.3",
+        "php-units-of-measure/php-units-of-measure": "^2.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
