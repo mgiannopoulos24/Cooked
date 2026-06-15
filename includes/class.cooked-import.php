@@ -217,6 +217,10 @@ class Cooked_Import {
     }
 
     public static function field_csv_upload( $name, $field_options, $color, $field ) {
+        echo '<p class="cooked-import-note"><strong>' . __( 'Download sample CSV files:', 'cooked' ) . '</strong> ';
+        echo '<a href="' . esc_url( COOKED_URL . 'sample-data/recipes-small.csv' ) . '" download>' . __( 'Small (1 recipe)', 'cooked' ) . '</a>, ';
+        echo '<a href="' . esc_url( COOKED_URL . 'sample-data/recipes-medium.csv' ) . '" download>' . __( 'Medium (3 recipes)', 'cooked' ) . '</a>, ';
+        echo '<a href="' . esc_url( COOKED_URL . 'sample-data/recipes-large.csv' ) . '" download>' . __( 'Large (10 recipes)', 'cooked' ) . '</a></p>';
         echo '<form id="cooked-csv-import-form" enctype="multipart/form-data">';
         echo '<p>';
         echo '<input type="file" id="cooked-csv-file" name="csv_file" accept=".csv" required>';
