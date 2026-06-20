@@ -75,7 +75,9 @@ class Cooked_Allergens {
                 'title' => __( 'Recipe List Allergens', 'cooked' ),
                 'desc'  => __( 'Show allergen icons on recipe cards in browse and list views.', 'cooked' ),
                 'type'  => 'checkboxes',
-                'default' => [],
+                'default' => [
+                    'enabled' => false,
+                ],
                 'options' => [
                     'enabled' => __( 'Show Allergens on Recipe Cards', 'cooked' ),
                 ],

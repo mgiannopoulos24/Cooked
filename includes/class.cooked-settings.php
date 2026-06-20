@@ -348,7 +348,7 @@ class Cooked_Settings {
                                 'disable_schema_output' => '<strong>' . __('Disable Recipe Schema Output', 'cooked') . '</strong> &mdash; ' . __('You should only do this if you\'re using something else to output schema information.', 'cooked'),
                                 'disable_cp_recipe_archive' => '<strong>' . __( 'Disable Recipe Archive Page', 'cooked' ) . '</strong> &mdash; ' . sprintf(
                                     /* translators: %s: recipe archive URL, e.g. https://example.com/recipe-archive/ */
-                                    __( 'Prevents the recipe archive from being displayed at %s. Use the Browse/Search Recipes Page instead.', 'cooked' ),
+                                    __( 'Prevents the recipe archive from being displayed at %s.', 'cooked' ),
                                     '<code>' . esc_html( untrailingslashit( $recipe_archive_url ) ) . '/</code>'
                                 )
                             ]
