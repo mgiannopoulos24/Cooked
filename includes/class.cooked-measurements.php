@@ -452,6 +452,9 @@ class Cooked_Measurements {
             ]
         ]);
 
+        // Ensures "mcg" is in the translation catalog (g and mg are cataloged via get()).
+        __( 'mcg', 'cooked' );
+
         return $nutrition_facts;
     }
 
