@@ -32,11 +32,11 @@ class Cooked_CSV_Import {
 	public static function import_from_file( $file_path ) {
 		global $_cooked_settings;
 
-		$results = array(
+		$results = [
 			'success' => 0,
-			'errors'  => array(),
+			'errors'  => [],
 			'total'   => 0,
-		);
+		];
 
 		if ( ! file_exists( $file_path ) ) {
 			$results['errors'][] = __( 'CSV file not found.', 'cooked' );
@@ -92,7 +92,7 @@ class Cooked_CSV_Import {
 			/**
 			 * Map row data to headers
 			 */
-			$data = array();
+			$data = [];
 			foreach ( $headers as $index => $header ) {
 				$data[ $header ] = isset( $row[ $index ] ) ? trim( $row[ $index ] ) : '';
 			}
@@ -149,14 +149,14 @@ class Cooked_CSV_Import {
 		 * Validate required fields
 		 */
 		if ( empty( $data['title'] ) ) {
-			return array(
+			return [
 				'success' => false,
 				'error'   => sprintf(
 					/* translators: %d: row number */
 					__( 'Row %1$d: Title is required', 'cooked' ),
 					$row_number
 				),
-			);
+			];
 		}
 
 		/**
@@ -171,17 +171,17 @@ class Cooked_CSV_Import {
 		/**
 		 * Create new recipe post
 		 */
-		$new_recipe = array(
+		$new_recipe = [
 			'post_type'    => 'cp_recipe',
 			'post_status'  => 'draft',
 			'post_title'   => sanitize_text_field( $data['title'] ),
 			'post_content' => '',
 			'post_author'  => get_current_user_id(),
-		);
+		];
 
 		$recipe_id = wp_insert_post( $new_recipe );
 		if ( is_wp_error( $recipe_id ) ) {
-			return array(
+			return [
 				'success' => false,
 				'error'   => sprintf(
 					/* translators: 1: row number, 2: error message */
@@ -189,13 +189,13 @@ class Cooked_CSV_Import {
 					$row_number,
 					$recipe_id->get_error_message()
 				),
-			);
+			];
 		}
 
 		/**
 		 * Prepare recipe meta
 		 */
-		$recipe_meta                    = array();
+		$recipe_meta                    = [];
 		$recipe_meta['cooked_version']  = COOKED_VERSION;
 		$recipe_meta['content']         = $default_content;
 		$recipe_meta['excerpt']         = isset( $data['excerpt'] ) ? sanitize_text_field( $data['excerpt'] ) : '';
@@ -224,7 +224,7 @@ class Cooked_CSV_Import {
 		/**
 		 * Parse ingredients
 		 */
-		$recipe_meta['ingredients'] = array();
+		$recipe_meta['ingredients'] = [];
 		if ( ! empty( $data['ingredients'] ) ) {
 			$measurements = Cooked_Measurements::get();
 
@@ -250,9 +250,9 @@ class Cooked_CSV_Import {
 				 * Check if it's a section heading (starts with #)
 				 */
 				if ( strpos( $part, '#' ) === 0 ) {
-					$recipe_meta['ingredients'][] = array(
+					$recipe_meta['ingredients'][] = [
 						'section_heading_name' => trim( $part, '#' ),
-					);
+					];
 					++$i;
 					continue;
 				}
@@ -260,7 +260,7 @@ class Cooked_CSV_Import {
 				/**
 				 * Collect next 3 non-empty parts for an ingredient (amount|measurement|name)
 				 */
-				$ingredient_parts = array();
+				$ingredient_parts = [];
 				$j                = $i;
 				while ( count( $ingredient_parts ) < 3 && $j < count( $all_parts ) ) {
 					$p = trim( $all_parts[ $j ] );
@@ -296,7 +296,7 @@ class Cooked_CSV_Import {
 						/**
 						 * Collect substitution parts (next 3 non-empty parts)
 						 */
-						$sub_parts = array();
+						$sub_parts = [];
 						$sub_i     = $k;
 						while ( count( $sub_parts ) < 3 && $sub_i < count( $all_parts ) ) {
 							$sub_part = trim( $all_parts[ $sub_i ] );
@@ -343,7 +343,7 @@ class Cooked_CSV_Import {
 		/**
 		 * Parse directions
 		 */
-		$recipe_meta['directions'] = array();
+		$recipe_meta['directions'] = [];
 		if ( ! empty( $data['directions'] ) ) {
 			$directions = explode( '|', $data['directions'] );
 			foreach ( $directions as $direction_string ) {
@@ -356,22 +356,22 @@ class Cooked_CSV_Import {
 				 * Check if it's a section heading (starts with #)
 				 */
 				if ( strpos( $direction_string, '#' ) === 0 ) {
-					$recipe_meta['directions'][] = array(
+					$recipe_meta['directions'][] = [
 						'section_heading_name' => trim( $direction_string, '#' ),
-					);
+					];
 					continue;
 				}
 
-				$recipe_meta['directions'][] = array(
+				$recipe_meta['directions'][] = [
 					'content' => wp_kses_post( $direction_string ),
-				);
+				];
 			}
 		}
 
 		/**
 		 * Nutrition data
 		 */
-		$recipe_meta['nutrition'] = array();
+		$recipe_meta['nutrition'] = [];
 		if ( isset( $data['servings'] ) && ! empty( $data['servings'] ) ) {
 			$recipe_meta['nutrition']['servings'] = sanitize_text_field( $data['servings'] );
 		}
@@ -395,18 +395,18 @@ class Cooked_CSV_Import {
 		$should_update_content = apply_filters( 'cooked_should_update_post_content', true, $recipe_id );
 		if ( $should_update_content ) {
 			wp_update_post(
-				array(
+				[
 					'ID'           => $recipe_id,
 					'post_excerpt' => $recipe_excerpt,
 					'post_content' => $seo_content,
-				)
+				]
 			);
 		} else {
 			wp_update_post(
-				array(
+				[
 					'ID'           => $recipe_id,
 					'post_excerpt' => $recipe_excerpt,
-				)
+				]
 			);
 		}
 
@@ -415,7 +415,7 @@ class Cooked_CSV_Import {
 		 */
 		if ( ! empty( $data['categories'] ) && taxonomy_exists( 'cp_recipe_category' ) ) {
 			$categories   = array_map( 'trim', explode( ',', $data['categories'] ) );
-			$category_ids = array();
+			$category_ids = [];
 			foreach ( $categories as $category_name ) {
 				$category_name = sanitize_text_field( $category_name );
 				if ( ! empty( $category_name ) ) {
@@ -438,7 +438,7 @@ class Cooked_CSV_Import {
 		if ( defined( 'COOKED_PRO_VERSION' ) ) {
 			if ( ! empty( $data['cuisine'] ) && taxonomy_exists( 'cp_recipe_cuisine' ) ) {
 				$cuisines    = array_map( 'trim', explode( ',', $data['cuisine'] ) );
-				$cuisine_ids = array();
+				$cuisine_ids = [];
 				foreach ( $cuisines as $cuisine_name ) {
 					$cuisine_name = sanitize_text_field( $cuisine_name );
 					if ( ! empty( $cuisine_name ) ) {
@@ -460,7 +460,7 @@ class Cooked_CSV_Import {
 
 			if ( ! empty( $data['cooking_method'] ) && taxonomy_exists( 'cp_recipe_cooking_method' ) ) {
 				$cooking_methods    = array_map( 'trim', explode( ',', $data['cooking_method'] ) );
-				$cooking_method_ids = array();
+				$cooking_method_ids = [];
 				foreach ( $cooking_methods as $cooking_method_name ) {
 					$cooking_method_name = sanitize_text_field( $cooking_method_name );
 					if ( ! empty( $cooking_method_name ) ) {
@@ -482,7 +482,7 @@ class Cooked_CSV_Import {
 
 			if ( ! empty( $data['diet'] ) && taxonomy_exists( 'cp_recipe_diet' ) ) {
 				$diets    = array_map( 'trim', explode( ',', $data['diet'] ) );
-				$diet_ids = array();
+				$diet_ids = [];
 				foreach ( $diets as $diet_name ) {
 					$diet_name = sanitize_text_field( $diet_name );
 					if ( empty( $diet_name ) ) {
@@ -504,7 +504,7 @@ class Cooked_CSV_Import {
 
 			if ( ! empty( $data['tags'] ) && taxonomy_exists( 'cp_recipe_tags' ) ) {
 				$tags    = array_map( 'trim', explode( ',', $data['tags'] ) );
-				$tag_ids = array();
+				$tag_ids = [];
 				foreach ( $tags as $tag_name ) {
 					if ( ! empty( $tag_name ) ) {
 						$term = get_term_by( 'name', $tag_name, 'cp_recipe_tags' );
@@ -524,10 +524,10 @@ class Cooked_CSV_Import {
 			}
 		}
 
-		return array(
+		return [
 			'success'   => true,
 			'recipe_id' => $recipe_id,
-		);
+		];
 	}
 
 	/**
@@ -607,7 +607,7 @@ class Cooked_CSV_Import {
 			return false;
 		}
 
-		$ingredient = array(
+		$ingredient = [
 			'amount'          => '',
 			'measurement'     => '',
 			'name'            => '',
@@ -616,7 +616,7 @@ class Cooked_CSV_Import {
 			'sub_amount'      => '',
 			'sub_measurement' => '',
 			'sub_name'        => '',
-		);
+		];
 
 		if ( count( $parts ) >= 3 ) {
 			/**
