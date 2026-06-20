@@ -156,6 +156,8 @@ class Cooked_Settings {
         $pages_array = self::pages_array( __('Choose a page...','cooked'), __('No pages','cooked') );
         $categories_array = self::terms_array( 'cp_recipe_category', __('No default', 'cooked'), __('No categories', 'cooked') );
         $recipes_per_page_array = self::per_page_array();
+        $recipe_archive_slug    = sanitize_title_with_dashes( __( 'Recipe Archive', 'cooked' ) );
+        $recipe_archive_url     = home_url( '/' . $recipe_archive_slug . '/' );
 
         // Dynamically load roles.
         $role_options = [];
@@ -343,7 +345,11 @@ class Cooked_Settings {
                                 'disable_meta_tags' => '<strong>' . sprintf(__('Disable %s Tags', 'cooked'), 'Cooked <code>&lt;meta&gt;</code>') . '</strong> &mdash; ' . __('Prevents duplicates when tags already exist.', 'cooked'),
                                 'disable_servings_switcher' => '<strong>' . __('Disable "Servings Switcher"', 'cooked') . '</strong> &mdash; ' . __('Removes the servings dropdown on recipes.', 'cooked'),
                                 'disable_schema_output' => '<strong>' . __('Disable Recipe Schema Output', 'cooked') . '</strong> &mdash; ' . __('You should only do this if you\'re using something else to output schema information.', 'cooked'),
-                                'disable_cp_recipe_archive' => '<strong>' . __('Disable Recipe Archive Page', 'cooked') . '</strong> &mdash; ' . __('Prevents the recipe archive from being displayed.', 'cooked')
+                                'disable_cp_recipe_archive' => '<strong>' . __( 'Disable Recipe Archive Page', 'cooked' ) . '</strong> &mdash; ' . sprintf(
+                                    /* translators: %s: recipe archive URL, e.g. https://example.com/recipe-archive/ */
+                                    __( 'Prevents the recipe archive from being displayed at %s. Use the Browse/Search Recipes Page instead.', 'cooked' ),
+                                    '<code>' . esc_html( untrailingslashit( $recipe_archive_url ) ) . '/</code>'
+                                )
                             ]
                         )
                     ],
