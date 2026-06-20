@@ -64,6 +64,7 @@ class Cooked_Recipes {
 
             if ( $limit ):
                 $args['limit'] = $limit;
+                $args['posts_per_page'] = $limit;
             endif;
 
         // Search Query
