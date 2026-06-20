@@ -62,6 +62,16 @@ class Cooked_Shortcodes {
         add_filter('pre_do_shortcode_tag', [$this, 'preprocess_shortcode'], 10, 4);
     }
 
+    /**
+     * Preprocess Shortcode.
+     *
+     * @since 1.0.0
+     * @param mixed  $output The shortcode output.
+     * @param string $tag    The shortcode tag.
+     * @param array  $attr   The shortcode attributes.
+     * @param array  $m      The regex matches.
+     * @return mixed
+     */
     public function preprocess_shortcode($output, $tag, $attr, $m) {
         // Tags to skip
         $skip_tags = [
@@ -693,6 +703,7 @@ class Cooked_Shortcodes {
         if (in_array('servings', $_cooked_settings['recipe_info_display_options'])) {
             $servings = isset($recipe['nutrition']['servings']) && $recipe['nutrition']['servings'] ? $recipe['nutrition']['servings'] : 1;
             Cooked_Recipes::serving_size_switcher( $servings );
+            Cooked_Recipes::measurement_system_switcher();
         }
     }
 
