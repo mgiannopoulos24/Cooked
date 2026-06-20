@@ -121,6 +121,11 @@ class Cooked_SEO {
             $description = $recipe['title'];
         endif;
 
+		$servings = isset( $recipe['nutrition']['servings'] ) ? absint( $recipe['nutrition']['servings'] ) : 0;
+		if ( ! $servings ) {
+			$servings = 1;
+		}
+
         $schema_array = false;
         $schema_data = [
             '@context' => 'http://schema.org',
@@ -135,7 +140,7 @@ class Cooked_SEO {
             'description' => $description,
             'recipeIngredient' => $ingredients,
             'recipeCategory' => $category_name,
-            'recipeYield' => (isset($recipe['nutrition']['servings']) && $recipe['nutrition']['servings'] ? $recipe['nutrition']['servings'] . ' ' . strtolower($_nutrition_facts['top']['servings']['name'])  : ''),
+            'recipeYield' => $servings . ' ' . strtolower( $_nutrition_facts['top']['servings']['name'] ),
             'cookTime' => Cooked_Measurements::time_format($cook_time, 'iso'),
             'prepTime' => Cooked_Measurements::time_format($prep_time, 'iso'),
             'totalTime' => Cooked_Measurements::time_format($total_time, 'iso'),
