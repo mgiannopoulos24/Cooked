@@ -69,6 +69,7 @@ function wp_kses_post( $data ) { return $data; }
 function sanitize_key( $key ) { return strtolower( preg_replace( '/[^a-zA-Z0-9_\-]/', '', $key ) ); }
 function sanitize_title( $title ) { return strtolower( preg_replace( '/[^a-zA-Z0-9_\-]/', '-', $title ) ); }
 function sanitize_title_with_dashes( $title, $raw_title = '', $context = 'display' ) { return strtolower( preg_replace( '/[^a-zA-Z0-9_\-]/', '-', $title ) ); }
+function absint( $maybeint ) { return abs( (int) $maybeint ); }
 function sanitize_text_field( $str ) { return strip_tags( stripslashes( $str ) ); }
 
 /**
