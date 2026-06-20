@@ -63,7 +63,6 @@ class Cooked_Recipes {
             endif;
 
             if ( $limit ):
-                $args['limit'] = $limit;
                 $args['posts_per_page'] = $limit;
             endif;
 
