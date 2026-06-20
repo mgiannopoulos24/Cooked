@@ -2710,75 +2710,75 @@ msgstr ""
 msgid "Show allergen icons on recipe cards in browse and list views."
 msgstr ""
 
-#: includes/class.cooked-allergens.php:80
+#: includes/class.cooked-allergens.php:82
 msgid "Show Allergens on Recipe Cards"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:109
-#: includes/class.cooked-allergens.php:288
-#: includes/class.cooked-allergens.php:312
-#: includes/class.cooked-allergens.php:331
+#: includes/class.cooked-allergens.php:111
+#: includes/class.cooked-allergens.php:290
+#: includes/class.cooked-allergens.php:314
+#: includes/class.cooked-allergens.php:333
 msgid "Allergens"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:156
+#: includes/class.cooked-allergens.php:158
 msgid "Celery"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:160
+#: includes/class.cooked-allergens.php:162
 msgid "Crustacean shellfish"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:164
+#: includes/class.cooked-allergens.php:166
 msgid "Eggs"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:168
+#: includes/class.cooked-allergens.php:170
 msgid "Fish"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:172
+#: includes/class.cooked-allergens.php:174
 msgid "Lupin"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:176
+#: includes/class.cooked-allergens.php:178
 msgid "Milk"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:180
+#: includes/class.cooked-allergens.php:182
 msgid "Molluscs"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:184
+#: includes/class.cooked-allergens.php:186
 msgid "Mustard"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:188
+#: includes/class.cooked-allergens.php:190
 msgid "Peanuts"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:192
+#: includes/class.cooked-allergens.php:194
 msgid "Sesame"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:196
+#: includes/class.cooked-allergens.php:198
 msgid "Soybeans"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:200
+#: includes/class.cooked-allergens.php:202
 msgid "Sulphur dioxide and sulphites"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:204
+#: includes/class.cooked-allergens.php:206
 msgid "Tree nuts"
 msgstr ""
 
-#: includes/class.cooked-allergens.php:208
+#: includes/class.cooked-allergens.php:210
 msgid "Wheat"
 msgstr ""
 
 #. translators: %s: allergen name
-#: includes/class.cooked-allergens.php:270
+#: includes/class.cooked-allergens.php:272
 #, php-format
 msgid "Contains %s"
 msgstr ""
@@ -2931,5 +2931,5 @@ msgstr ""
 #. translators: %s: recipe archive URL, e.g. https://example.com/recipe-archive
 #: includes/class.cooked-settings.php:364
 #, php-format
-msgid "Prevents the recipe archive from being displayed at %s. Use the Browse/Search Recipes Page instead."
+msgid "Prevents the recipe archive from being displayed at %s."
 msgstr ""
