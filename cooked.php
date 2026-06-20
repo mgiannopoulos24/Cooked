@@ -12,23 +12,23 @@
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least:   6.8
  * Tested up to:        7.0
- * Requires PHP:        7.4 
+ * Requires PHP:        7.4
  * Contributors:        xjsv, boxystudio
  * Tags:                recipe, recipes, food, cooking, nutrition
- * 
+ *
  * Cooked is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
- * 
+ *
  * Cooked is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Cooked. If not, see http://www.gnu.org/licenses/.
- * 
+ *
  * @package Cooked
 */
 
@@ -40,8 +40,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 define( 'COOKED_DEV', false );
-define( 'COOKED_VERSION', '1.14.0' );
-define( 'COOKED_DEV', true );
 define( 'COOKED_VERSION', '1.15.0' );
 
 if ( ! class_exists( 'Cooked_Plugin' ) ) :
