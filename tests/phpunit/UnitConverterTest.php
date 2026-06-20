@@ -21,18 +21,18 @@ class UnitConverterTest extends TestCase {
 	}
 
 	public function data_volume_conversions() {
-		return array(
-			'cup to ml'   => array( 1, 'cup', 'ml', 236.5882, 0.0001 ),
-			'tsp to ml'   => array( 1, 'tsp', 'ml', 4.92892, 0.00001 ),
-			'tbsp to ml'  => array( 1, 'tbsp', 'ml', 14.78676, 0.00001 ),
-			'tbsp to tsp' => array( 1, 'tbsp', 'tsp', 3, 0.001 ),
-			'floz to ml'  => array( 1, 'floz', 'ml', 29.57353, 0.00001 ),
-			'gal to l'    => array( 1, 'gal', 'l', 3.78541, 0.00001 ),
-			'pt to ml'    => array( 1, 'pt', 'ml', 473.17648, 0.0001 ),
-			'qt to ml'    => array( 1, 'qt', 'ml', 946.35295, 0.0001 ),
-			'dl to floz'  => array( 1, 'dl', 'floz', 3.3814, 0.0001 ),
-			'l to cup'    => array( 1, 'l', 'cup', 4.22675, 0.0001 ),
-		);
+		return [
+			'cup to ml'   => [ 1, 'cup', 'ml', 236.5882, 0.0001 ],
+			'tsp to ml'   => [ 1, 'tsp', 'ml', 4.92892, 0.00001 ],
+			'tbsp to ml'  => [ 1, 'tbsp', 'ml', 14.78676, 0.00001 ],
+			'tbsp to tsp' => [ 1, 'tbsp', 'tsp', 3, 0.001 ],
+			'floz to ml'  => [ 1, 'floz', 'ml', 29.57353, 0.00001 ],
+			'gal to l'    => [ 1, 'gal', 'l', 3.78541, 0.00001 ],
+			'pt to ml'    => [ 1, 'pt', 'ml', 473.17648, 0.0001 ],
+			'qt to ml'    => [ 1, 'qt', 'ml', 946.35295, 0.0001 ],
+			'dl to floz'  => [ 1, 'dl', 'floz', 3.3814, 0.0001 ],
+			'l to cup'    => [ 1, 'l', 'cup', 4.22675, 0.0001 ],
+		];
 	}
 
 	/**
@@ -46,17 +46,17 @@ class UnitConverterTest extends TestCase {
 	}
 
 	public function data_weight_conversions() {
-		return array(
-			'oz to g'  => array( 1, 'oz', 'g', 28.34952, 0.0001 ),
-			'g to oz'  => array( 1, 'g', 'oz', 0.035274, 0.000001 ),
-			'lb to g'  => array( 1, 'lb', 'g', 453.59237, 0.0001 ),
-			'kg to lb' => array( 1, 'kg', 'lb', 2.20462, 0.0001 ),
-			'mg to g'  => array( 1, 'mg', 'g', 0.001, 0.0001 ),
-			'g to kg'  => array( 1000, 'g', 'kg', 1, 0.0001 ),
-			'oz to lb' => array( 16, 'oz', 'lb', 1, 0.001 ),
-			'kg to g'  => array( 1, 'kg', 'g', 1000, 0.001 ),
-			'lb to oz' => array( 1, 'lb', 'oz', 16, 0.001 ),
-		);
+		return [
+			'oz to g'  => [ 1, 'oz', 'g', 28.34952, 0.0001 ],
+			'g to oz'  => [ 1, 'g', 'oz', 0.035274, 0.000001 ],
+			'lb to g'  => [ 1, 'lb', 'g', 453.59237, 0.0001 ],
+			'kg to lb' => [ 1, 'kg', 'lb', 2.20462, 0.0001 ],
+			'mg to g'  => [ 1, 'mg', 'g', 0.001, 0.0001 ],
+			'g to kg'  => [ 1000, 'g', 'kg', 1, 0.0001 ],
+			'oz to lb' => [ 16, 'oz', 'lb', 1, 0.001 ],
+			'kg to g'  => [ 1, 'kg', 'g', 1000, 0.001 ],
+			'lb to oz' => [ 1, 'lb', 'oz', 16, 0.001 ],
+		];
 	}
 
 	public function test_get_target_unit() {
@@ -78,7 +78,7 @@ class UnitConverterTest extends TestCase {
 	}
 
 	public function test_neutral_units_return_null() {
-		$neutral_units = array( 'stick', 'dash', 'drop', 'pinch', 'drizzle', 'clove', 'jar', 'can' );
+		$neutral_units = [ 'stick', 'dash', 'drop', 'pinch', 'drizzle', 'clove', 'jar', 'can' ];
 		foreach ( $neutral_units as $unit ) {
 			$this->assertNull( Cooked_Unit_Converter::convert( 1, $unit, 'ml' ) );
 			$this->assertNull( Cooked_Unit_Converter::get_target_unit( $unit ) );
