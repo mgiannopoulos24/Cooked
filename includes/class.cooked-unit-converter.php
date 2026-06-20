@@ -31,23 +31,23 @@ class Cooked_Unit_Converter {
 	 * @since 1.15.0
 	 * @var array
 	 */
-	private static $unit_map = array(
-		'cup'  => array( Volume::class, 'cup' ),
-		'tsp'  => array( Volume::class, 'tsp' ),
-		'tbsp' => array( Volume::class, 'tbsp' ),
-		'floz' => array( Volume::class, 'fl oz' ),
-		'gal'  => array( Volume::class, 'gal' ),
-		'pt'   => array( Volume::class, 'pt' ),
-		'qt'   => array( Volume::class, 'qt' ),
-		'dl'   => array( Volume::class, 'dl' ),
-		'ml'   => array( Volume::class, 'ml' ),
-		'l'    => array( Volume::class, 'l' ),
-		'oz'   => array( Mass::class, 'oz' ),
-		'lb'   => array( Mass::class, 'lb' ),
-		'g'    => array( Mass::class, 'g' ),
-		'kg'   => array( Mass::class, 'kg' ),
-		'mg'   => array( Mass::class, 'mg' ),
-	);
+	private static $unit_map = [
+		'cup'  => [ Volume::class, 'cup' ],
+		'tsp'  => [ Volume::class, 'tsp' ],
+		'tbsp' => [ Volume::class, 'tbsp' ],
+		'floz' => [ Volume::class, 'fl oz' ],
+		'gal'  => [ Volume::class, 'gal' ],
+		'pt'   => [ Volume::class, 'pt' ],
+		'qt'   => [ Volume::class, 'qt' ],
+		'dl'   => [ Volume::class, 'dl' ],
+		'ml'   => [ Volume::class, 'ml' ],
+		'l'    => [ Volume::class, 'l' ],
+		'oz'   => [ Mass::class, 'oz' ],
+		'lb'   => [ Mass::class, 'lb' ],
+		'g'    => [ Mass::class, 'g' ],
+		'kg'   => [ Mass::class, 'kg' ],
+		'mg'   => [ Mass::class, 'mg' ],
+	];
 
 	/**
 	 * Default opposite-system target for each unit.
@@ -55,7 +55,7 @@ class Cooked_Unit_Converter {
 	 * @since 1.15.0
 	 * @var array
 	 */
-	private static $default_targets = array(
+	private static $default_targets = [
 		'cup'  => 'ml',
 		'tsp'  => 'ml',
 		'tbsp' => 'ml',
@@ -71,7 +71,7 @@ class Cooked_Unit_Converter {
 		'g'    => 'oz',
 		'kg'   => 'lb',
 		'mg'   => 'g',
-	);
+	];
 
 	/**
 	 * Convert an amount from one unit to another.
@@ -94,10 +94,10 @@ class Cooked_Unit_Converter {
 			return null;
 		}
 
-		return array(
+		return [
 			'amount' => ( new $from_class( $amount, $from_unit ) )->toUnit( $to_unit ),
 			'unit'   => $to,
-		);
+		];
 	}
 
 	/**

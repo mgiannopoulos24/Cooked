@@ -342,7 +342,7 @@ class Cooked_Settings {
                                 /* translators: an option to disable "meta" tags. */
                                 'disable_meta_tags' => '<strong>' . sprintf(__('Disable %s Tags', 'cooked'), 'Cooked <code>&lt;meta&gt;</code>') . '</strong> &mdash; ' . __('Prevents duplicates when tags already exist.', 'cooked'),
                                 'disable_servings_switcher' => '<strong>' . __('Disable "Servings Switcher"', 'cooked') . '</strong> &mdash; ' . __('Removes the servings dropdown on recipes.', 'cooked'),
-                                'disable_measurement_switcher' => '<strong>' . __('Disable "Measurement System Switcher"', 'cooked') . '</strong> &mdash; ' . __('Removes the Metric/Imperial toggle on recipes.', 'cooked'),
+                                'enable_measurement_switcher' => '<strong>' . __('Enable "Measurement System Switcher"', 'cooked') . '</strong> &mdash; ' . __('Shows the Metric/Imperial toggle on recipes.', 'cooked'),
                                 'disable_schema_output' => '<strong>' . __('Disable Recipe Schema Output', 'cooked') . '</strong> &mdash; ' . __('You should only do this if you\'re using something else to output schema information.', 'cooked'),
                                 'disable_cp_recipe_archive' => '<strong>' . __('Disable Recipe Archive Page', 'cooked') . '</strong> &mdash; ' . __('Prevents the recipe archive from being displayed.', 'cooked')
                             ]

@@ -864,10 +864,10 @@ class Cooked_Recipes {
 
     public static function measurement_system_switcher() {
         global $_cooked_settings, $post;
-        $switcher_disabled = ( isset( $_cooked_settings['advanced'] ) && in_array( 'disable_measurement_switcher', $_cooked_settings['advanced'] ) ? true : false );
+        $switcher_enabled = ( isset( $_cooked_settings['advanced'] ) && in_array( 'enable_measurement_switcher', $_cooked_settings['advanced'] ) ? true : false );
         $printing = ( is_singular('cp_recipe') && isset($_GET['print']) );
 
-        if ( !$printing && !$switcher_disabled ):
+        if ( !$printing && $switcher_enabled ):
             $current = esc_html( get_query_var( 'measurement_system', '' ) );
             $labels = [
                 '' => __( 'Default', 'cooked' ),
