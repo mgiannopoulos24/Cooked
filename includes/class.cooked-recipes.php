@@ -880,9 +880,9 @@ class Cooked_Recipes {
                 echo '<a aria-label="' . esc_attr( $current_label ) . '" href="#">' . esc_html( $current_label ) . '</a>';
                 echo '<label for="cooked-measurement-system-changer" class="screen-reader-text">' . __( 'Measurement System', 'cooked' ) . '</label>';
                 echo '<select id="cooked-measurement-system-changer" name="measurement_system" class="cooked-measurement-system-changer">';
-                    echo '<option value=""' . selected( $current, '', false ) . '>' . esc_attr( $labels[''] ) . '</option>';
-                    echo '<option value="metric"' . selected( $current, 'metric', false ) . '>' . esc_attr( $labels['metric'] ) . '</option>';
-                    echo '<option value="imperial"' . selected( $current, 'imperial', false ) . '>' . esc_attr( $labels['imperial'] ) . '</option>';
+                    echo '<option value=""' . selected( $current, '', false ) . '>' . __( 'Default', 'cooked' ) . '</option>';
+                    echo '<option value="metric"' . selected( $current, 'metric', false ) . '>' . __( 'Metric', 'cooked' ) . '</option>';
+                    echo '<option value="imperial"' . selected( $current, 'imperial', false ) . '>' . __( 'Imperial', 'cooked' ) . '</option>';
                 echo '</select>';
             echo '</span>';
         endif;
