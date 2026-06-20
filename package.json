@@ -26,9 +26,9 @@
     "i18n": "bun run i18n:make-pot && bun run i18n:update-po && bun run i18n:make-mo",
     "lint": "./vendor/bin/phpcs --standard=phpcs.xml .",
     "lint-fix": "./vendor/bin/phpcbf --standard=phpcs.xml .",
-    "test": "./vendor/bin/phpunit",
+    "test:php": "./vendor/bin/phpunit",
     "icons:embed": "bun scripts/embed-icons-font.js",
-    "bundle": "bun run gulp build && bun run i18n && composer install --no-dev && bunx bestzip build/cooked.zip cooked.php LICENSE readme.txt wpml-config.xml assets/ includes/ languages/ templates/ vendor/"
+    "bundle": "bun run gulp build && bun run i18n && composer install --no-dev && bunx bestzip build/cooked.zip cooked.php LICENSE readme.txt wpml-config.xml assets/ includes/ languages/ sample-data/ templates/ vendor/"
   },
   "repository": {
     "type": "git",
@@ -64,7 +64,7 @@
     "gulp-uglify": "^3.0.2",
     "playwright": "^1.60.0",
     "sass": "^1.100.0",
-    "@wordpress/env": "^11.6.0",
+    "@wordpress/env": "^11.8.0",
     "bestzip": "^3.0.1"
   }
 }

@@ -172,6 +172,7 @@ class Cooked_Post_Types {
 
     public static function add_query_vars_filter( $vars ) {
         $vars[] = 'servings';
+        $vars[] = 'measurement_system';
 
         return $vars;
     }

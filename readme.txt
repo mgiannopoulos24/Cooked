@@ -86,6 +86,7 @@ Version 1.15.0 adds allergen badges to recipe cards and single recipe views via 
 == Changelog ==
 
 = 1.15.0 =
+* **NEW:** Metric/Imperial measurement system switcher. Convert ingredient units between systems with a new toggle alongside the servings switcher. Added `measurement_system` query var and `disable_measurement_switcher` advanced setting.
 * **NEW:** Added allergen support. Mark up to 14 major allergens (FDA + EU) on a recipe via a new sidebar meta box. Allergen icons are shown automatically on recipe cards and can be added to single recipes via `[cooked-info include="allergens"]`.
 
 = 1.14.0 =
