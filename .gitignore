@@ -1,11 +1,27 @@
 # MacOS
 .DS_Store
 
-# Node.js
-node_modules/
+# VSCode
+.vscode/
 
+# DDEV
+.ddev/
+.ddev/docker-compose.cooked.yaml
+
+# Dev dependencies
+node_modules/
+vendor
+
+# Tests
 tests/test-results/
 tests/playwright-report/
 tests/blob-report/
 tests/playwright/.cache/
 tests/.auth/
+tests/phpunit/.cache
+
+# Build
+build/*
+
+# WordPress
+wordpress/

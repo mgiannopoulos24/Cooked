@@ -1,4 +1,11 @@
 <?php
+/**
+ * Widgets Init
+ *
+ * @package     Cooked
+ * @subpackage  Widgets
+ * @since       1.2.0
+ */
 
 include 'nutrition.php';
 include 'search.php';

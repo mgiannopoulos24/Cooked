@@ -1,4 +1,19 @@
 <?php
+/**
+ * Search Widget
+ *
+ * @package     Cooked
+ * @subpackage  Widgets
+ * @since       1.2.0
+ */
+
+/**
+ * Cooked_Widget_Search Class
+ *
+ * This class handles the Search Form widget display.
+ *
+ * @since 1.2.0
+ */
 
 class Cooked_Widget_Search extends WP_Widget {
 

@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  ELementor Support
- * @since       1.0.0
+ * @since       1.5.3
 */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * This class handles Elementor support.
  *
- * @since 1.0.0
+ * @since 1.5.3
  */
 class Cooked_Elementor {
 

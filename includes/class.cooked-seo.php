@@ -107,7 +107,7 @@ class Cooked_SEO {
         $unsaturatedFatAmount = (isset($recipe['nutrition']['monounsaturated_fat']) && $recipe['nutrition']['monounsaturated_fat'] ? $recipe['nutrition']['monounsaturated_fat'] : 0) + (isset($recipe['nutrition']['polyunsaturated_fat']) && $recipe['nutrition']['polyunsaturated_fat'] ? $recipe['nutrition']['polyunsaturated_fat'] : 0);
 
         if ($unsaturatedFatAmount):
-            $unsaturatedFatContent = $unsaturatedFatAmount . ' ' . $_nutrition_facts['main']['fat']['subs']['monounsaturated_fat']['measurement'];
+            $unsaturatedFatContent = $unsaturatedFatAmount . ' ' . __( $_nutrition_facts['main']['fat']['subs']['monounsaturated_fat']['measurement'], 'cooked' );
         else:
             $unsaturatedFatContent = '';
         endif;
@@ -120,6 +120,11 @@ class Cooked_SEO {
         elseif (!empty($recipe['title'])):
             $description = $recipe['title'];
         endif;
+
+		$servings = isset( $recipe['nutrition']['servings'] ) ? absint( $recipe['nutrition']['servings'] ) : 0;
+		if ( ! $servings ) {
+			$servings = 1;
+		}
 
         $schema_array = false;
         $schema_data = [
@@ -135,23 +140,23 @@ class Cooked_SEO {
             'description' => $description,
             'recipeIngredient' => $ingredients,
             'recipeCategory' => $category_name,
-            'recipeYield' => (isset($recipe['nutrition']['servings']) && $recipe['nutrition']['servings'] ? $recipe['nutrition']['servings'] . ' ' . strtolower($_nutrition_facts['top']['servings']['name'])  : ''),
+            'recipeYield' => $servings . ' ' . strtolower( $_nutrition_facts['top']['servings']['name'] ),
             'cookTime' => Cooked_Measurements::time_format($cook_time, 'iso'),
             'prepTime' => Cooked_Measurements::time_format($prep_time, 'iso'),
             'totalTime' => Cooked_Measurements::time_format($total_time, 'iso'),
             'nutrition' => [
                 '@type' => 'NutritionInformation',
                 'calories' => (isset($recipe['nutrition']['calories']) && $recipe['nutrition']['calories'] ? $recipe['nutrition']['calories'] . ' ' . strtolower($_nutrition_facts['mid']['calories']['name']) : 0),
-                'carbohydrateContent' => (isset($recipe['nutrition']['carbs']) && $recipe['nutrition']['carbs'] ? $recipe['nutrition']['carbs'] . ' ' . $_nutrition_facts['main']['carbs']['measurement'] : ''),
-                'cholesterolContent' => (isset($recipe['nutrition']['cholesterol']) && $recipe['nutrition']['cholesterol'] ? $recipe['nutrition']['cholesterol'] . ' ' . $_nutrition_facts['main']['cholesterol']['measurement'] : ''),
-                'fatContent' => (isset($recipe['nutrition']['fat']) && $recipe['nutrition']['fat'] ? $recipe['nutrition']['fat'] . ' ' . $_nutrition_facts['main']['fat']['measurement'] : ''),
-                'fiberContent' => (isset($recipe['nutrition']['fiber']) && $recipe['nutrition']['fiber'] ? $recipe['nutrition']['fiber'] . ' ' . $_nutrition_facts['main']['carbs']['subs']['fiber']['measurement'] : ''),
-                'proteinContent' => (isset($recipe['nutrition']['protein']) && $recipe['nutrition']['protein'] ? $recipe['nutrition']['protein'] . ' ' . $_nutrition_facts['main']['protein']['measurement'] : ''),
-                'saturatedFatContent' => (isset($recipe['nutrition']['sat_fat']) && $recipe['nutrition']['sat_fat'] ? $recipe['nutrition']['sat_fat'] . ' ' . $_nutrition_facts['main']['fat']['subs']['sat_fat']['measurement'] : ''),
+                'carbohydrateContent' => (isset($recipe['nutrition']['carbs']) && $recipe['nutrition']['carbs'] ? $recipe['nutrition']['carbs'] . ' ' . __( $_nutrition_facts['main']['carbs']['measurement'], 'cooked' ) : ''),
+                'cholesterolContent' => (isset($recipe['nutrition']['cholesterol']) && $recipe['nutrition']['cholesterol'] ? $recipe['nutrition']['cholesterol'] . ' ' . __( $_nutrition_facts['main']['cholesterol']['measurement'], 'cooked' ) : ''),
+                'fatContent' => (isset($recipe['nutrition']['fat']) && $recipe['nutrition']['fat'] ? $recipe['nutrition']['fat'] . ' ' . __( $_nutrition_facts['main']['fat']['measurement'], 'cooked' ) : ''),
+                'fiberContent' => (isset($recipe['nutrition']['fiber']) && $recipe['nutrition']['fiber'] ? $recipe['nutrition']['fiber'] . ' ' . __( $_nutrition_facts['main']['carbs']['subs']['fiber']['measurement'], 'cooked' ) : ''),
+                'proteinContent' => (isset($recipe['nutrition']['protein']) && $recipe['nutrition']['protein'] ? $recipe['nutrition']['protein'] . ' ' . __( $_nutrition_facts['main']['protein']['measurement'], 'cooked' ) : ''),
+                'saturatedFatContent' => (isset($recipe['nutrition']['sat_fat']) && $recipe['nutrition']['sat_fat'] ? $recipe['nutrition']['sat_fat'] . ' ' . __( $_nutrition_facts['main']['fat']['subs']['sat_fat']['measurement'], 'cooked' ) : ''),
                 'servingSize' => (isset($recipe['nutrition']['serving_size']) && $recipe['nutrition']['serving_size'] ? $recipe['nutrition']['serving_size'] . ' ' . strtolower($_nutrition_facts['top']['servings']['name']) : ''),
-                'sodiumContent' => (isset($recipe['nutrition']['sodium']) && $recipe['nutrition']['sodium'] ? $recipe['nutrition']['sodium'] . ' ' . $_nutrition_facts['main']['sodium']['measurement'] : ''),
-                'sugarContent' => (isset($recipe['nutrition']['sugars']) && $recipe['nutrition']['sugars'] ? $recipe['nutrition']['sugars'] . ' ' . $_nutrition_facts['main']['carbs']['subs']['sugars']['measurement'] : ''),
-                'transFatContent' => (isset($recipe['nutrition']['trans_fat']) && $recipe['nutrition']['trans_fat'] ? $recipe['nutrition']['trans_fat'] . ' ' . $_nutrition_facts['main']['fat']['subs']['trans_fat']['measurement'] : ''),
+                'sodiumContent' => (isset($recipe['nutrition']['sodium']) && $recipe['nutrition']['sodium'] ? $recipe['nutrition']['sodium'] . ' ' . __( $_nutrition_facts['main']['sodium']['measurement'], 'cooked' ) : ''),
+                'sugarContent' => (isset($recipe['nutrition']['sugars']) && $recipe['nutrition']['sugars'] ? $recipe['nutrition']['sugars'] . ' ' . __( $_nutrition_facts['main']['carbs']['subs']['sugars']['measurement'], 'cooked' ) : ''),
+                'transFatContent' => (isset($recipe['nutrition']['trans_fat']) && $recipe['nutrition']['trans_fat'] ? $recipe['nutrition']['trans_fat'] . ' ' . __( $_nutrition_facts['main']['fat']['subs']['trans_fat']['measurement'], 'cooked' ) : ''),
                 'unsaturatedFatContent' => $unsaturatedFatContent,
             ],
             'recipeInstructions' => $directions,

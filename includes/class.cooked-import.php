@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Import
- * @since       1.0.0
+ * @since       1.8.2
 */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  *
  * This class handles the import of recipes from other plugins.
  *
- * @since 1.0.0
+ * @since 1.8.2
  */
 class Cooked_Import {
 
@@ -156,8 +156,8 @@ class Cooked_Import {
         $html_desc .= '<li><strong>prep_time</strong> - ' . __( 'Prep time in minutes', 'cooked' ) . '</li>';
         $html_desc .= '<li><strong>cook_time</strong> - ' . __( 'Cook time in minutes', 'cooked' ) . '</li>';
         $html_desc .= '<li><strong>difficulty_level</strong> - ' . __( 'Difficulty level (1=Beginner, 2=Intermediate, 3=Advanced)', 'cooked' ) . '</li>';
-        $html_desc .= '<li><strong>ingredients</strong> - ' . __( 'Ingredients, separated by pipe (|). Format: "amount|measurement|name" or "name" for simple ingredients. Add substitutions with double pipe (||): "amount|measurement|name||sub_amount|sub_measurement|sub_name"', 'cooked' ) . '</li>';
-        $html_desc .= '<li><strong>directions</strong> - ' . __( 'Directions/instructions, separated by pipe (|)', 'cooked' ) . '</li>';
+        $html_desc .= '<li style="line-height: 1.6;"><strong>ingredients</strong> - ' . __( 'Ingredients, separated by pipe <code>(|)</code>. <br>Format: <code>"amount|measurement|name"</code> or <code>"name"</code> for simple ingredients.<br>Add substitutions with double pipe <code>(||)</code>: <code>"amount|measurement|name||sub_amount|sub_measurement|sub_name"</code>', 'cooked' ) . '</li>';
+        $html_desc .= '<li><strong>directions</strong> - ' . __( 'Directions/instructions, separated by pipe <code>(|)</code>', 'cooked' ) . '</li>';
         $html_desc .= '<li><strong>notes</strong> - ' . __( 'Notes', 'cooked' ) . '</li>';
             $html_desc .= '<li><strong>category</strong> - ' . __( 'Category, separated by comma', 'cooked' ) . '</li>';
             if ( defined('COOKED_PRO_VERSION') ) {
@@ -217,6 +217,10 @@ class Cooked_Import {
     }
 
     public static function field_csv_upload( $name, $field_options, $color, $field ) {
+        echo '<p class="cooked-import-note"><strong>' . __( 'Download sample CSV files:', 'cooked' ) . '</strong> ';
+        echo '<a href="' . esc_url( COOKED_URL . 'sample-data/recipes-small.csv' ) . '" download>' . __( 'Small (1 recipe)', 'cooked' ) . '</a>, ';
+        echo '<a href="' . esc_url( COOKED_URL . 'sample-data/recipes-medium.csv' ) . '" download>' . __( 'Medium (3 recipes)', 'cooked' ) . '</a>, ';
+        echo '<a href="' . esc_url( COOKED_URL . 'sample-data/recipes-large.csv' ) . '" download>' . __( 'Large (10 recipes)', 'cooked' ) . '</a></p>';
         echo '<form id="cooked-csv-import-form" enctype="multipart/form-data">';
         echo '<p>';
         echo '<input type="file" id="cooked-csv-file" name="csv_file" accept=".csv" required>';

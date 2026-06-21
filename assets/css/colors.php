@@ -54,6 +54,9 @@ body .cooked-nutrition-label dl.cooked-nut-bottom dt:nth-last-child(2):nth-child
 .cooked-fsm .cooked-fsm-ingredients { background:rgba(255,255,255,0.1); }
 .cooked-recipe .cooked-rating-stars > .cooked-rating-star.cooked-rating-star-empty,
 .cooked-recipe .cooked-ratable .cooked-rating-stars.cooked-user-rated > .cooked-rating-star.cooked-rating-star-empty { color:rgba(255,255,255,0.25); }
+.cooked-allergen,
+.cooked-allergen .cooked-icon { color:rgba(255,255,255,0.5); }
+.cooked-allergen:hover .cooked-icon { color:#fff; }
 <?php
 
 endif;

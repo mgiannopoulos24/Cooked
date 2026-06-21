@@ -21,6 +21,7 @@ class Cooked_Recipe_Meta {
     function __construct() {
         add_action( 'add_meta_boxes', [&$this, 'add_recipe_meta_box'] );
         add_action( 'save_post', [&$this, 'save_recipe_meta_box'] );
+        add_action( 'admin_notices', [&$this, 'recipe_embed_shortcode_admin_notice'] );
     }
 
     public static function meta_cleanup( $recipe_settings ) {
@@ -192,6 +193,33 @@ class Cooked_Recipe_Meta {
         add_action( 'save_post', [&$this, 'save_recipe_meta_box'] );
     }
 
+    public function recipe_embed_shortcode_admin_notice() {
+        $screen = get_current_screen();
+        if ( ! $screen || $screen->post_type !== 'cp_recipe' || $screen->base !== 'post' ) {
+            return;
+        }
+
+        global $post;
+        if ( ! $post || ! isset( $post->ID ) ) {
+            return;
+        }
+
+        $recipe_settings = get_post_meta( $post->ID, '_recipe_settings', true );
+        if ( ! Cooked_Recipes::settings_have_self_recipe_embed_shortcode( $recipe_settings, $post->ID ) ) {
+            return;
+        }
+
+        $shortcode = '[cooked-recipe id="' . intval( $post->ID ) . '"]';
+
+        printf(
+            '<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+            sprintf(
+                __( 'This recipe is set up to include itself in the Recipe Template (containing shortcode %s), which can break the page. Remove the embed that references this same recipe.', 'cooked' ),
+                $shortcode
+            )
+        );
+    }
+
     /**
      * Render Meta Box content.
      *
@@ -261,6 +289,91 @@ function cooked_recipe_shortcodes_content() {
         <p class="cooked-bm-10"><?php _e( 'This shortcode displays the recipe in its entirety, using the "Recipe Template" field in the first tab.', 'cooked' ); ?></p>
         <div class="cooked-bm-20 cooked-block">
             <input class='cooked-shortcode-field' type='text' readonly value='[cooked-recipe id="<?php echo intval($post_id); ?>"]' />
+        </div>
+
+        <hr class="cooked-hr">
+
+        <!-- [cooked-recipe-card] -->
+        <div class="cooked-clearfix">
+
+            <div class="cooked-setting-column-23">
+
+                <h3 class="cooked-settings-title cooked-bm-0"><?php _e( 'Recipe Card', 'cooked' ); ?></h3>
+                <p class="cooked-bm-10"><?php _e( 'Displays a compact linked recipe card with image, title, author, and excerpt — not the full recipe. Use this to promote this recipe elsewhere on your site.', 'cooked' ); ?></p>
+                <div class="cooked-bm-20 cooked-block">
+                    <input class="cooked-shortcode-field" type="text" readonly value='[cooked-recipe-card id="<?php echo intval( $post_id ); ?>"]'>
+                </div>
+
+                <div class="cooked-clearfix">
+                    <div class="cooked-setting-column-12">
+                        <p class="cooked-bm-5"><strong>"style"</strong></p>
+                        <p class="cooked-bm-10"><?php _e( 'Choose "modern" or "modern-centered".', 'cooked' ); ?></p>
+                        <div class="cooked-bm-20 cooked-block">
+                            <input class="cooked-shortcode-field" type="text" readonly value='style="modern"'>
+                        </div>
+                    </div>
+                    <div class="cooked-setting-column-12">
+                        <p class="cooked-bm-5"><strong>"width"</strong></p>
+                        <p class="cooked-bm-10"><?php _e( 'Set the card width. Defaults to 100%. Use "%" or "px" after the number.', 'cooked' ); ?></p>
+                        <div class="cooked-bm-20 cooked-block">
+                            <input class="cooked-shortcode-field" type="text" readonly value='width="300px"'>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cooked-clearfix">
+                    <div class="cooked-setting-column-12">
+                        <p class="cooked-bm-5"><strong>"hide_excerpt"</strong></p>
+                        <p class="cooked-bm-10"><?php _e( 'Hide the recipe excerpt.', 'cooked' ); ?></p>
+                        <div class="cooked-bm-20 cooked-block">
+                            <input class="cooked-shortcode-field" type="text" readonly value='hide_excerpt="true"'>
+                        </div>
+                    </div>
+                    <div class="cooked-setting-column-12">
+                        <p class="cooked-bm-5"><strong>"hide_author"</strong></p>
+                        <p class="cooked-bm-10"><?php _e( 'Hide the recipe author.', 'cooked' ); ?></p>
+                        <div class="cooked-bm-20 cooked-block">
+                            <input class="cooked-shortcode-field" type="text" readonly value='hide_author="true"'>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cooked-clearfix">
+                    <div class="cooked-setting-column-12">
+                        <p class="cooked-bm-5"><strong>"hide_image"</strong></p>
+                        <p class="cooked-bm-10"><?php _e( 'Hide the recipe image.', 'cooked' ); ?></p>
+                        <div class="cooked-bm-20 cooked-block">
+                            <input class="cooked-shortcode-field" type="text" readonly value='hide_image="true"'>
+                        </div>
+                    </div>
+                    <div class="cooked-setting-column-12">
+                        <p class="cooked-bm-5"><strong>"hide_title"</strong></p>
+                        <p class="cooked-bm-10"><?php _e( 'Hide the recipe title.', 'cooked' ); ?></p>
+                        <div class="cooked-bm-20 cooked-block">
+                            <input class="cooked-shortcode-field" type="text" readonly value='hide_title="true"'>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cooked-setting-column-13">
+                <p class="cooked-bm-10 cooked-tm-10"><strong class="cooked-heading"><?php _e( 'Available Variables', 'cooked' ); ?></strong></p>
+                <p class="cooked-bm-10">
+                    <strong>id</strong> (<?php _e( 'Recipe ID', 'cooked' ); ?>)<br>
+                    <strong>width</strong> (<?php _e( 'Card width', 'cooked' ); ?>)<br>
+                    <strong>style</strong> (<?php _e( 'modern, modern-centered', 'cooked' ); ?>)<br>
+                    <strong>hide_image</strong> (<?php _e( 'true/false', 'cooked' ); ?>)<br>
+                    <strong>hide_title</strong> (<?php _e( 'true/false', 'cooked' ); ?>)<br>
+                    <strong>hide_excerpt</strong> (<?php _e( 'true/false', 'cooked' ); ?>)<br>
+                    <strong>hide_author</strong> (<?php _e( 'true/false', 'cooked' ); ?>)
+                </p>
+                <p class="cooked-bm-10 cooked-tm-10"><strong class="cooked-heading"><?php _e( 'Example', 'cooked' ); ?></strong></p>
+                <p class="cooked-bm-10">
+                    <code>[cooked-recipe-card id="<?php echo intval( $post_id ); ?>" width="300px" style="modern"]</code>
+                </p>
+            </div>
+
         </div>
 
     </div><?php
@@ -1017,7 +1130,7 @@ function cooked_render_recipe_fields( $post_id ) {
 
                                 foreach ( $nutrition_facts as $slug => $nf ):
                                     echo '<li>';
-                                    echo '<strong>' . esc_html($nf['name']) . '</strong> <strong class="cooked-nut-label" data-labeltype="' . esc_html($slug) . '">___</strong>' . ( isset($nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_html($slug) . '_measurement">' . esc_html($nf['measurement']) . '</strong>' : '' );
+                                    echo '<strong>' . esc_html($nf['name']) . '</strong> <strong class="cooked-nut-label" data-labeltype="' . esc_html($slug) . '">___</strong>' . ( isset($nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_html($slug) . '_measurement">' . esc_html__( $nf['measurement'], 'cooked' ) . '</strong>' : '' );
                                     echo ( isset( $nf['pdv'] ) ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent" data-pdv="' . esc_attr($nf['pdv']) . '" data-labeltype="' . esc_html($slug) . '">0</span>%</strong>' : '' );
 
                                     if ( isset($nf['subs']) ):
@@ -1025,16 +1138,16 @@ function cooked_render_recipe_fields( $post_id ) {
                                             echo '<ul>';
                                                 if ($sub_slug === 'trans_fat'):
                                                     echo '<li>';
-                                                        echo $sub_nf['nutrition_info_name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">___</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html($sub_nf['measurement']) . '</strong>' : '' );
+                                                        echo $sub_nf['nutrition_info_name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">___</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html__( $sub_nf['measurement'], 'cooked' ) . '</strong>' : '' );
                                                     echo '</li>';
                                                 elseif ($sub_slug === 'added_sugars'):
                                                     echo '<ul><li>';
-                                                        echo __('Includes', 'cooked') . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">___</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html($sub_nf['measurement']) . '</strong>' : '' ) . ' ' . esc_html($sub_nf['name']);
+                                                        echo __('Includes', 'cooked') . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">___</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html__( $sub_nf['measurement'], 'cooked' ) . '</strong>' : '' ) . ' ' . esc_html($sub_nf['name']);
                                                         echo ( isset( $sub_nf['pdv'] ) ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent" data-pdv="' . esc_attr($sub_nf['pdv']) . '" data-labeltype="' . esc_attr($sub_slug) . '">0</span>%</strong>' : '' );
                                                     echo '</li></ul>';
                                                 else:
                                                     echo '<li>';
-                                                    echo $sub_nf['name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">___</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html($sub_nf['measurement']) . '</strong>' : '' );
+                                                    echo $sub_nf['name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">___</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html__( $sub_nf['measurement'], 'cooked' ) . '</strong>' : '' );
                                                     echo ( isset( $sub_nf['pdv'] ) ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent" data-pdv="' . esc_attr($sub_nf['pdv']) . '" data-labeltype="' . esc_attr($sub_slug) . '">0</span>%</strong>' : '' );
                                                     echo '</li>';
                                                 endif;
@@ -1051,7 +1164,7 @@ function cooked_render_recipe_fields( $post_id ) {
                                 <?php $nutrition_facts = $_nutrition_facts['bottom'];
                                 foreach ( $nutrition_facts as $slug => $nf ):
                                     echo '<li>';
-                                        echo $nf['name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '">___</strong>' . ( isset($nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '_measurement">' . esc_html($nf['measurement']) . '</strong>' : '' );
+                                        echo $nf['name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '">___</strong>' . ( isset($nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '_measurement">' . esc_html__( $nf['measurement'], 'cooked' ) . '</strong>' : '' );
                                         echo ( isset( $nf['pdv'] ) ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent" data-pdv="' . esc_attr($nf['pdv']) . '" data-labeltype="' . esc_attr($slug) . '">0</span>%</strong>' : '' );
                                     echo '</li>';
                                 endforeach; ?>

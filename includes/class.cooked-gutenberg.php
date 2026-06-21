@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Gutenberg Functions
- * @since       1.0.0
+ * @since       1.5.2
 */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * This class handles the Cooked Recipe Meta Box creation.
  *
- * @since 1.0.0
+ * @since 1.5.2
  */
 class Cooked_Gutenberg {
 

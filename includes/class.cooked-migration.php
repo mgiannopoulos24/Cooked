@@ -4,7 +4,7 @@
  *
  * @package     Cooked
  * @subpackage  Migration
- * @since       1.0.0
+ * @since       1.3.0
 */
 
 // Exit if accessed directly
@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  *
  * This class handles the migration from Cooked Classic.
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
 class Cooked_Migration {
 

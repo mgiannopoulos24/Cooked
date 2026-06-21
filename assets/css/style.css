@@ -86,6 +86,41 @@ button.cooked-button {
     margin-left: 1rem;
 }
 
+/* Measurement System Switcher */
+.cooked-recipe-info span.cooked-measurement-system {
+    padding-left: 3rem;
+}
+.cooked-recipe-info span.cooked-measurement-system select.cooked-measurement-system-changer {
+    opacity: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.cooked-recipe-info span.cooked-measurement-system-icon {
+    opacity: 0.5;
+    width: 1rem;
+    height: 1rem;
+    font-size: 2.2rem;
+    line-height: 1;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin: -1.1rem 0 0 0;
+}
+.cooked-recipe-info span.cooked-measurement-system-icon i.cooked-icon {
+    display: block;
+}
+
 /* Recipe Image */
 .cooked-post-featured-image {
     max-width: 100%;
@@ -1959,4 +1994,62 @@ body.cooked-fsm-active #wpadminbar {
         width: 97%;
         min-width: 97%;
     }
+}
+
+/* Allergen Icons */
+.cooked-allergens {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 6px 0 0 0;
+    vertical-align: middle;
+}
+
+.cooked-allergen {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+.cooked-allergen .cooked-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.cooked-allergen,
+.cooked-allergen .cooked-icon {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.cooked-allergen:hover .cooked-icon {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.cooked-recipe-card .cooked-allergens {
+    display: flex;
+    margin: 8px 0 0 0;
+}
+
+.cooked-recipe-card-modern-centered .cooked-allergens {
+    justify-content: center;
+}
+
+.cooked-recipe-full .cooked-allergens {
+    display: flex;
+    margin: 0 0 1rem;
+}
+
+.cooked-recipe-fitness .cooked-allergens,
+.cooked-recipe-modern .cooked-allergens {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1rem 0.4rem;
+}
+
+.cooked-recipe-info .cooked-allergens-info .cooked-allergens {
+    display: inline-flex;
+    margin: 0;
+    vertical-align: middle;
 }

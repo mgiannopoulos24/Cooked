@@ -20,6 +20,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 class Cooked_Shortcodes {
 
+    /**
+     * Recipe IDs currently being rendered by [cooked-recipe] in this request.
+     *
+     * @var int[]
+     */
+    private static $recipe_embed_stack = [];
+
     function __construct() {
         // Allow shortcodes in widgets
         add_filter( 'widget_text', 'do_shortcode' );
@@ -55,6 +62,16 @@ class Cooked_Shortcodes {
         add_filter('pre_do_shortcode_tag', [$this, 'preprocess_shortcode'], 10, 4);
     }
 
+    /**
+     * Preprocess Shortcode.
+     *
+     * @since 1.0.0
+     * @param mixed  $output The shortcode output.
+     * @param string $tag    The shortcode tag.
+     * @param array  $attr   The shortcode attributes.
+     * @param array  $m      The regex matches.
+     * @return mixed
+     */
     public function preprocess_shortcode($output, $tag, $attr, $m) {
         // Tags to skip
         $skip_tags = [
@@ -289,22 +306,63 @@ class Cooked_Shortcodes {
 
         global $recipe_settings, $_cooked_content_unfiltered;
 
-        ob_start();
-
         $recipe_id = intval( $atts['id'] );
 
-        if ( $recipe_id ) {
-
-            $recipe_settings = Cooked_Recipes::get( $recipe_id, true );
-            if ( !$recipe_settings || $recipe_settings && empty( $recipe_settings ) ) {
-                return wpautop( '<strong>[cooked-recipe id="' . intval( $recipe_id ) . '"]</strong><br><em>' . __( '(recipe not found or in draft status)', 'cooked' ) . '</em>' );
-            } else {
-                load_template( COOKED_DIR . 'templates/front/recipe.php', false );
-            }
-
+        if ( ! $recipe_id ) {
+            return '';
         }
 
-        return do_shortcode( ob_get_clean() );
+        if ( in_array( $recipe_id, self::$recipe_embed_stack, true ) ) {
+            $output = self::recipe_embed_blocked_message( $recipe_id );
+
+            if ( $output ) {
+                $output = '<div id="cooked-recipe-embed-' . intval( $recipe_id ) . '" class="cooked-recipe-embed">' . $output . '</div>';
+                $output = apply_filters( 'cooked_recipe_shortcode_output', $output, $recipe_id );
+            }
+
+            return $output;
+        }
+
+        $recipe_settings = Cooked_Recipes::get( $recipe_id, true );
+        if ( ! $recipe_settings || empty( $recipe_settings ) ) {
+            $output = wpautop( '<strong>[cooked-recipe id="' . intval( $recipe_id ) . '"]</strong><br><em>' . __( '(recipe not found or in draft status)', 'cooked' ) . '</em>' );
+
+            if ( $output ) {
+                $output = '<div id="cooked-recipe-embed-' . intval( $recipe_id ) . '" class="cooked-recipe-embed">' . $output . '</div>';
+                $output = apply_filters( 'cooked_recipe_shortcode_output', $output, $recipe_id );
+            }
+
+            return $output;
+        }
+
+        self::$recipe_embed_stack[] = $recipe_id;
+
+        try {
+            ob_start();
+            load_template( COOKED_DIR . 'templates/front/recipe.php', false );
+            $output = do_shortcode( ob_get_clean() );
+
+            if ( $output ) {
+                $output = '<div id="cooked-recipe-embed-' . intval( $recipe_id ) . '" class="cooked-recipe-embed">' . $output . '</div>';
+                $output = apply_filters( 'cooked_recipe_shortcode_output', $output, $recipe_id );
+            }
+
+            return $output;
+        } finally {
+            array_pop( self::$recipe_embed_stack );
+        }
+    }
+
+    private static function recipe_embed_blocked_message( $recipe_id ) {
+        $shortcode = '[cooked-recipe id="' . intval( $recipe_id ) . '"]';
+        $message = '<em>' . sprintf(
+            __( 'This recipe could not be displayed because it is set up to include itself (containing shortcode %s). Remove the duplicate recipe embed from the Recipe Template.', 'cooked' ),
+            $shortcode
+        ) . '</em>';
+
+        $message = apply_filters( 'cooked_recipe_embed_blocked_message', $message, $recipe_id, self::$recipe_embed_stack );
+
+        return wpautop( $message );
     }
 
     public function cooked_gallery_shortcode($atts, $content = null) {
@@ -645,6 +703,7 @@ class Cooked_Shortcodes {
         if (in_array('servings', $_cooked_settings['recipe_info_display_options'])) {
             $servings = isset($recipe['nutrition']['servings']) && $recipe['nutrition']['servings'] ? $recipe['nutrition']['servings'] : 1;
             Cooked_Recipes::serving_size_switcher( $servings );
+            Cooked_Recipes::measurement_system_switcher();
         }
     }
 
@@ -958,7 +1017,7 @@ class Cooked_Shortcodes {
                     if ( isset( $nutrition_facts[$slug] ) && $nutrition_facts[$slug] || isset( $nutrition_facts[$slug] ) && $nutrition_facts[$slug] === '0' ):
 
                     echo '<dt>';
-                    echo '<strong>' . $nf['name'] . '</strong> <strong class="cooked-nut-label">' . esc_html( $nutrition_facts[$slug] ) . '</strong>' . ( isset($nf['measurement']) ? '<strong class="cooked-nut-label cooked-nut-measurement">' . esc_html( $nf['measurement'] ) . '</strong>' : '' );
+                    echo '<strong>' . $nf['name'] . '</strong> <strong class="cooked-nut-label">' . esc_html( $nutrition_facts[$slug] ) . '</strong>' . ( isset($nf['measurement']) ? '<strong class="cooked-nut-label cooked-nut-measurement">' . esc_html__( $nf['measurement'], 'cooked' ) . '</strong>' : '' );
                     echo ( isset( $nf['pdv'] ) && $nutrition_facts[$slug] ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent">' . ceil( ( esc_html( $nutrition_facts[$slug] ) / $nf['pdv'] ) * 100 ) . '</span>%</strong>' : '' );
 
                     if ( isset($nf['subs']) ):
@@ -967,16 +1026,16 @@ class Cooked_Shortcodes {
                                 echo '<dl>';
                                 if ($sub_slug === 'trans_fat'):
                                     echo '<dt>';
-                                        echo $sub_nf['nutrition_info_name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">' . esc_html( $nutrition_facts[$sub_slug] ) . '</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html($sub_nf['measurement']) . '</strong>' : '' );
+                                        echo $sub_nf['nutrition_info_name'] . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">' . esc_html( $nutrition_facts[$sub_slug] ) . '</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html__( $sub_nf['measurement'], 'cooked' ) . '</strong>' : '' );
                                     echo '</dt>';
                                 elseif ($sub_slug === 'added_sugars'):
                                     echo '<dl><dt>';
-                                        echo __('Includes', 'cooked') . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">' . esc_html( $nutrition_facts[$sub_slug] ) . '</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html($sub_nf['measurement']) . '</strong>' : '' ) . ' ' . esc_html($sub_nf['name']);
+                                        echo __('Includes', 'cooked') . ' <strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '">' . esc_html( $nutrition_facts[$sub_slug] ) . '</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label" data-labeltype="' . esc_attr( $sub_slug ) . '_measurement">' . esc_html__( $sub_nf['measurement'], 'cooked' ) . '</strong>' : '' ) . ' ' . esc_html($sub_nf['name']);
                                         echo ( isset( $sub_nf['pdv'] ) ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent" data-pdv="' . esc_attr($sub_nf['pdv']) . '" data-labeltype="' . esc_attr($sub_slug) . '">' . ceil( ( esc_html( $nutrition_facts[$sub_slug] ) / $sub_nf['pdv'] ) * 100 ) . '</span>%</strong>' : '' );
                                     echo '</dt></dl>';
                                 else:
                                     echo '<dt>';
-                                        echo esc_html( $sub_nf['name'] ) . ' <strong class="cooked-nut-label">' . esc_html( $nutrition_facts[$sub_slug] ) . '</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label cooked-nut-measurement">' . esc_html( $sub_nf['measurement'] ) . '</strong>' : '' );
+                                        echo esc_html( $sub_nf['name'] ) . ' <strong class="cooked-nut-label">' . esc_html( $nutrition_facts[$sub_slug] ) . '</strong>' . ( isset($sub_nf['measurement']) ? '<strong class="cooked-nut-label cooked-nut-measurement">' . esc_html__( $sub_nf['measurement'], 'cooked' ) . '</strong>' : '' );
                                         echo ( isset( $sub_nf['pdv'] ) && $nutrition_facts[$sub_slug] ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent">' . ceil( ( esc_html( $nutrition_facts[$sub_slug] ) / $sub_nf['pdv'] ) * 100 ) . '</span>%</strong>' : '' );
                                     echo '</dt>';
                                 endif;
@@ -1006,7 +1065,7 @@ class Cooked_Shortcodes {
                 foreach ( $bottom_facts as $slug => $nf ):
                     if ( isset( $nutrition_facts[$slug] ) && $nutrition_facts[$slug] || isset( $nutrition_facts[$slug] ) && $nutrition_facts[$slug] === '0' ):
                         echo '<dt>';
-                            echo '<strong>' . esc_html($nf['name']) . '</strong> <span class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '">' . esc_html( $nutrition_facts[$slug] ) . '</span>' . ( isset($nf['measurement']) ? '<span class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '_measurement">' . esc_html($nf['measurement']) . '</span>' : '' );
+                            echo '<strong>' . esc_html($nf['name']) . '</strong> <span class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '">' . esc_html( $nutrition_facts[$slug] ) . '</span>' . ( isset($nf['measurement']) ? '<span class="cooked-nut-label" data-labeltype="' . esc_attr( $slug ) . '_measurement">' . esc_html__( $nf['measurement'], 'cooked' ) . '</span>' : '' );
                             echo ( isset( $nf['pdv'] ) ? '<strong class="cooked-nut-right"><span class="cooked-nut-percent" data-pdv="' . esc_attr($nf['pdv']) . '" data-labeltype="' . esc_attr($slug) . '">' . ceil( ( esc_html( $nutrition_facts[$slug] ) / $nf['pdv'] ) * 100 ) . '</span>%</strong>' : '' );
                         echo '</dt>';
                     endif;

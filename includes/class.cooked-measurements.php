@@ -30,6 +30,7 @@ class Cooked_Measurements {
 				'plural_abbr' => _x( 'g', 'Grams Abbreviation (Plural)', 'cooked' ),
 				'singular' => __( 'gram', 'cooked' ),
 				'plural' => __( 'grams', 'cooked' ),
+				'system' => 'metric',
 				'variations' => [ 'g', 'g.', 'gram', 'grams' ],
 			],
             'kg' => [
@@ -37,6 +38,7 @@ class Cooked_Measurements {
                 'plural_abbr' => _x('kg', 'Kilograms Abbreviation (Plural)', 'cooked'),
                 'singular' => __('kilogram', 'cooked'),
                 'plural' => __('kilograms', 'cooked'),
+                'system' => 'metric',
                 'variations' => ['kg', 'kg.', 'kilogram', 'kilograms'],
             ],
             'mg' => [
@@ -44,6 +46,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('mg', 'cooked'),
                 'singular' => __('milligram', 'cooked'),
                 'plural' => __('milligrams', 'cooked'),
+                'system' => 'metric',
                 'variations' => ['mg', 'mg.', 'milligram', 'milligrams'],
             ],
             'oz' => [
@@ -51,6 +54,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('oz', 'cooked'),
                 'singular' => __('ounce', 'cooked'),
                 'plural' => __('ounces', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['oz', 'oz.', 'ounce', 'ounces'],
             ],
             'floz' => [
@@ -58,6 +62,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('fl oz', 'cooked'),
                 'singular' => __('fluid ounce', 'cooked'),
                 'plural' => __('fluid ounces', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['fl oz', 'fl oz.', 'fl. oz.', 'fluid ounce', 'fluid ounces'],
             ],
             'cup' => [
@@ -65,6 +70,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('cups', 'cooked'),
                 'singular' => __('cup', 'cooked'),
                 'plural' => __('cups', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['c', 'c.', 'cup', 'cups'],
             ],
             'tsp' => [
@@ -72,6 +78,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('tsp', 'cooked'),
                 'singular' => __('teaspoon', 'cooked'),
                 'plural' => __('teaspoons', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['t', 'tsp.', 'tsp', 'teaspoon', 'teaspoons'],
             ],
             'tbsp' => [
@@ -79,6 +86,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('tbsp', 'cooked'),
                 'singular' => __('tablespoon', 'cooked'),
                 'plural' => __('tablespoons', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['T', 'tbl.', 'tbl', 'tbs.', 'tbs', 'tbsp.', 'tbsp', 'tablespoon', 'tablespoons'],
             ],
             'dl' => [
@@ -86,6 +94,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('dl', 'cooked'),
                 'singular' => __('deciliter', 'cooked'),
                 'plural' => __('deciliters', 'cooked'),
+                'system' => 'metric',
                 'variations' => ['dl', 'dl.', 'deciliter', 'deciliters'],
             ],
             'ml' => [
@@ -93,6 +102,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('ml', 'cooked'),
                 'singular' => __('milliliter', 'cooked'),
                 'plural' => __('milliliters', 'cooked'),
+                'system' => 'metric',
                 'variations' => ['ml', 'ml.', 'mL', 'mL.', 'cc', 'milliliter', 'milliliters', 'millilitre', 'millilitres'],
             ],
             'l' => [
@@ -100,6 +110,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('l', 'cooked'),
                 'singular' => __('liter', 'cooked'),
                 'plural' => __('liters', 'cooked'),
+                'system' => 'metric',
                 'variations' => ['l', 'l.', 'L', 'L.', 'liter', 'liters', 'litre', 'litres'],
             ],
             'stick' => [
@@ -114,6 +125,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('lbs', 'cooked'),
                 'singular' => __('pound', 'cooked'),
                 'plural' => __('pounds', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['lb', 'lbs', 'lb.', 'lbs.', 'pound', 'pounds'],
             ],
             'dash' => [
@@ -135,6 +147,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('gals', 'cooked'),
                 'singular' => __('gallon', 'cooked'),
                 'plural' => __('gallons', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['G', 'G.', 'gal', 'gal.', 'gallon', 'gallons'],
             ],
             'pinch' => [
@@ -149,6 +162,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('pt', 'cooked'),
                 'singular' => __('pint', 'cooked'),
                 'plural' => __('pints', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['p', 'p.', 'pt', 'pt.', 'pts', 'pts.', 'fl pt', 'fl. pt.', 'pint', 'pints'],
             ],
             'qt' => [
@@ -156,6 +170,7 @@ class Cooked_Measurements {
                 'plural_abbr' => __('qts', 'cooked'),
                 'singular' => __('quart', 'cooked'),
                 'plural' => __('quarts', 'cooked'),
+                'system' => 'imperial',
                 'variations' => ['q', 'q.', 'qt', 'qt.', 'qts', 'qts.', 'fl qt', 'fl. qt.', 'quart', 'quarts'],
             ],
             'drizzle' => [
@@ -451,6 +466,9 @@ class Cooked_Measurements {
                 ]
             ]
         ]);
+
+        // Ensures "mcg" is in the translation catalog (g and mg are cataloged via get()).
+        __( 'mcg', 'cooked' );
 
         return $nutrition_facts;
     }

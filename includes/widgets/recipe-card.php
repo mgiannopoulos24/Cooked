@@ -1,4 +1,19 @@
 <?php
+/**
+ * Recipe Card Widget
+ *
+ * @package     Cooked
+ * @subpackage  Widgets
+ * @since       1.3.0
+ */
+
+/**
+ * Cooked_Widget_Recipe_Card Class
+ *
+ * This class handles the Recipe Card widget display.
+ *
+ * @since 1.3.0
+ */
 
 class Cooked_Widget_Recipe_Card extends WP_Widget {
 

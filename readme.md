@@ -63,19 +63,66 @@ We welcome contributions from the community! If you'd like to contribute to Cook
 5. Submit a Pull Request describing your changes.
 
 ### Development
-#### Generateing language files
+This project uses [Bun](https://bun.sh) for package management and running scripts. Install Bun, then from the repo root run `bun install`.
+
+#### Development environment
+You can run the plugin locally with either wp-env or DDEV; pick one.
+
+**wp-env** — Requires Node.js and Docker; `@wordpress/env` is in devDependencies. Config in `.wp-env.json` (PHP 7.4, port 8888, plugin mounted from repo root).
 ``` bash
-wp i18n make-pot /wp-content/themes/cooked/ /wp-content/themes/cooked/languages/cooked.pot
+bun run start:wp-env   # start
+bun run stop:wp-env    # stop
+bun run reset:wp-env   # wipe all db uploads
+bun run destroy:wp-env # remove containers and data
+bun run shell:wp-env   # run bash inside the container
+```
+Site at port 8888, tests at 8889.
+
+**DDEV** — Requires [DDEV](https://ddev.com) installed.
+First time: run `bun run init:ddev` (creates `wordpress/` and `.ddev/`, installs WP, activates Cooked; credentials and URL are printed).
+Then use `bun run start:ddev` to start and `bun run launch:ddev` to open wp-admin.
+Stop with `bun run stop:ddev`, full remove with `bun run destroy:ddev`.
+``` bash
+bun run init:ddev    # first-time setup only
+bun run start:ddev   # start
+bun run launch:ddev  # open wp-admin
+bun run stop:ddev    # stop
+bun run destroy:ddev # remove env and wordpress/
+```
+
+#### Generating language files
+Run with wp-env or DDEV started. The script detects which environment you use.
+``` bash
+bun run i18n              # make .pot, update .po, compile .mo
+bun run i18n:make-pot     # generate cooked.pot only
+bun run i18n:update-po    # update .po from .pot
+bun run i18n:make-mo      # compile .po to .mo
 ```
 #### Compiling assets (JS/CSS)
 ``` bash
-gulp build
+bun run build   # one-off build
+bun run watch   # watch and rebuild on change
 ```
 #### Creating distribution bundle
 ``` bash
-npm run bundle
+bun run bundle
 ```
-Creates a `cooked.zip` file ready for distribution, excluding development files.
+Runs build and i18n, then creates `build/cooked.zip` ready for distribution (excludes dev files).
+
+#### Testing
+
+**PHPCS** — Lint PHP files against WordPress Coding Standards and PHPCompatibility (PHP 7.4+):
+``` bash
+bun run lint       # check for violations
+bun run lint-fix   # auto-fix violations
+```
+
+**PHPUnit** — Run the test suite (14 test classes covering CSV import, recipes, settings, SEO, and more):
+``` bash
+bun run test
+```
+
+Tests are in `tests/phpunit/` with CSV fixtures in `tests/test_data/`. Requires a running wp-env or DDEV environment.
 
 ## Documentation
 
