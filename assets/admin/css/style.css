@@ -390,7 +390,7 @@ body .button.button-cooked-reset:hover { color:#555; }
   }
   #cooked-directions-builder .cooked-direction-block:not(.cooked-direction-heading) > .cooked-direction-content {
     grid-area: content;
-    padding: 0 !important;
+    padding: 14px 14px 0 14px!important;
     min-height: 80px;
   }
   #cooked-directions-builder .cooked-direction-block:not(.cooked-direction-heading) > .cooked-direction-image {
