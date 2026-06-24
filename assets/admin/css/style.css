@@ -55,7 +55,6 @@ body.post-type-cp_recipe .mce-fullscreen {
 #cooked-settings-wrap .cooked-settings-update-button > .button-primary { box-shadow:none; border:none; }
 #cooked-settings-wrap.is-stuck .cooked-settings-update-button { position:fixed; top:40px; right:11px; z-index:100001; }
 
-#cooked_recipe_settings .hndle, #cooked_recipe_settings button.handlediv { display:none; }
 
 #cooked-recipe-tabs { list-style:none; padding:0; margin:0; position:absolute; top:0; left:0; width:100%; }
 #cooked-recipe-tabs li { font-size:0.9rem; line-height:3rem; height:3rem; font-weight:500; display:inline-block; padding:0 1.25rem; margin:0; color:#fff; }
@@ -67,7 +66,7 @@ body.post-type-cp_recipe .mce-fullscreen {
 #cooked-recipe-tabs li.cooked-loading:hover { background:none; color:#fff; }
 #cooked_recipe_settings.cooked-loading #cooked-recipe-tabs li.cooked-loading { opacity:1; }
 
-#cooked_recipe_settings .inside { padding-top:60px; }
+#cooked_recipe_settings .inside { padding-top:60px; margin: 0}
 #cooked_recipe_settings.stuck #cooked-recipe-tabs {
   position: fixed;
   width: auto;
